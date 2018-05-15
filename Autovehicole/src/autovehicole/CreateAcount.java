@@ -5,8 +5,12 @@
  */
 package autovehicole;
 
+
 import java.awt.Frame;
 import javax.swing.JOptionPane;
+
+
+
 
 
 public class CreateAcount extends javax.swing.JFrame {
@@ -18,7 +22,8 @@ public class CreateAcount extends javax.swing.JFrame {
         initComponents();
         
         this.setLocationRelativeTo(null);
-        
+
+        jLabel_wrong_user.setVisible(false);
         jLabel_wrong_firstName.setVisible(false);
         jLabel_wrong_lastName.setVisible(false);
         jLabel_wrong_password_repeat.setVisible(false);
@@ -26,6 +31,7 @@ public class CreateAcount extends javax.swing.JFrame {
         jLabel_wrong_address.setVisible(false);
     }
 
+    //Close the application
     public void ExitAplication(){
         int yes_no = JOptionPane.showConfirmDialog(null, "Sunteti sigur ca doriti sa inchideti aplicatia?", "Inchidere aplicatie.", JOptionPane.YES_NO_OPTION);
         if(yes_no == 0){
@@ -34,10 +40,29 @@ public class CreateAcount extends javax.swing.JFrame {
         
     }
     
+    // Check if the user is Unique
+    public boolean UnicityUser(){
+        boolean yes = false;
+        String sql = "SELECT * FROM `user` WHERE `userName_user`= '"+jTextField_userName_user.getText()+"'";
+        
+        ExecutQuerySimple simple_query = new ExecutQuerySimple();
+        simple_query.executeSqlQuery(sql);
+        
+        if(simple_query.getIdentic() == true){
+            jLabel_wrong_user.setVisible(true);
+            yes = true;
+        }else{
+            jLabel_wrong_user.setVisible(false);
+            yes = false;
+        }
+        
+        return yes;
+    }
+    
     
     // function for go back to login panel
     public void GoBackToLogin(){
-        if( !jTextField_firstName_user.getText().equals("") || !jTextField_lastName_user.getText().equals("") 
+        if( !jTextField_userName_user.getText().equals("") || !jTextField_firstName_user.getText().equals("") || !jTextField_lastName_user.getText().equals("") 
             || !jPasswordField_password_user.getText().equals("") || !jTextArea_address_user.getText().equals("") )
         {
           int yes_no =  JOptionPane.showConfirmDialog(null, "Vrei sa renunti la crearea noului cont?", "Creare cont nou.", JOptionPane.YES_NO_OPTION);
@@ -54,8 +79,9 @@ public class CreateAcount extends javax.swing.JFrame {
           }
     }
     
-    
-        public void EmptyTheFields(){
+    // Reset all fields to their first state
+    public void EmptyTheFields(){
+        jTextField_userName_user.setText("");
         jTextField_firstName_user.setText("");
         jTextField_lastName_user.setText("");
         jPasswordField_password_user.setText("");
@@ -66,23 +92,33 @@ public class CreateAcount extends javax.swing.JFrame {
         jRadioButton_m_user.setSelected(true);
         
     } 
-    
-    
-    
+
+    /**
+    /* Check if the fields are empty
+    /* If the field are not empty insert the value in data base
+    **/
     public void CheckFields(){
         
+        String userName_user = jTextField_userName_user.getText();
         String firstName = jTextField_firstName_user.getText();
         String lastName = jTextField_lastName_user.getText();
         String password = jPasswordField_password_user.getText();
-        
+        String function = jComboBox_function_user.getSelectedItem().toString();
+        String jud = jComboBox_jud_user.getSelectedItem().toString();
+        String address = jTextArea_address_user.getText();
         String gender_m = jRadioButton_m_user.getText();
         String gender_f = jRadioButton_f_user.getText();
         jRadioButton_m_user.setActionCommand(gender_m);
-        jRadioButton_f_user.setActionCommand(gender_f);
-        
-        String address = jTextArea_address_user.getText();
+        jRadioButton_f_user.setActionCommand(gender_f);     
+        String gender = buttonGroup_gender.getSelection().getActionCommand();
 
-        
+       
+
+        if( userName_user.equals("")){
+            jLabel_wrong_user.setVisible(true);
+        }else{
+            jLabel_wrong_user.setVisible(false);
+        }
         if( firstName.equals("")){
             jLabel_wrong_firstName.setVisible(true);
         }else{
@@ -104,11 +140,21 @@ public class CreateAcount extends javax.swing.JFrame {
             jLabel_wrong_address.setVisible(false);
         }
         
-        if( !firstName.equals("") && !lastName.equals("") && !password.equals("") && !address.equals("")
-            &&  password.equals(jPasswordField_repeat_password_user.getText())   )
+        
+        // insert the data in data base if no fields is empty
+        if( !userName_user.equals("") && !UnicityUser() && !firstName.equals("") && !lastName.equals("") &&
+            !password.equals("") && !address.equals("") &&  password.equals(jPasswordField_repeat_password_user.getText())   )
         {
-            JOptionPane.showMessageDialog(null, "Utilizatorul a fost adaugat cu succes!");
+            String query = "INSERT INTO user( userName_user, firstName_user, lastName_user, address_user, password_user, gender_user, function_user, jud_user"
+                    + ")"+" VALUES ("
+                    + "'"+userName_user+"','"+firstName+"','"+lastName+"','"+address+"','"+password+"','"+gender+"','"+function+"','"+jud+"')";
+            
+            executQuery this_query = new executQuery();
+            this_query.executeSqlQuery(query, "Utilizator adaugat cu succes in baza de date!", "Inregistrare utilizator");
+          
             EmptyTheFields();
+        }else{
+            JOptionPane.showMessageDialog(null, "Campurile trebuie completate\n si sa nu fie marcate cu X !","Atentie!", JOptionPane.INFORMATION_MESSAGE);
         }
         
         
@@ -159,10 +205,13 @@ public class CreateAcount extends javax.swing.JFrame {
         jPasswordField_repeat_password_user = new javax.swing.JPasswordField();
         jPasswordField_password_user = new javax.swing.JPasswordField();
         jLabel_wrong_password = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jTextField_userName_user = new javax.swing.JTextField();
+        jLabel_wrong_user = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(510, 580));
+        setPreferredSize(new java.awt.Dimension(510, 620));
         setResizable(false);
         getContentPane().setLayout(null);
 
@@ -213,43 +262,53 @@ public class CreateAcount extends javax.swing.JFrame {
         jPanel2.setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel1.setText("Nume :");
+        jLabel1.setText("User :");
         jPanel2.add(jLabel1);
-        jLabel1.setBounds(50, 60, 58, 30);
+        jLabel1.setBounds(50, 60, 47, 30);
 
         jTextField_firstName_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jTextField_firstName_user.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField_firstName_userKeyReleased(evt);
+            }
+        });
         jPanel2.add(jTextField_firstName_user);
-        jTextField_firstName_user.setBounds(200, 60, 220, 30);
+        jTextField_firstName_user.setBounds(200, 100, 220, 30);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setText("Prenume :");
         jPanel2.add(jLabel2);
-        jLabel2.setBounds(50, 100, 81, 30);
+        jLabel2.setBounds(50, 140, 81, 30);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setText("Judet :");
         jPanel2.add(jLabel3);
-        jLabel3.setBounds(50, 220, 55, 30);
+        jLabel3.setBounds(50, 260, 55, 30);
 
         jTextField_lastName_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jTextField_lastName_user.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField_lastName_userKeyReleased(evt);
+            }
+        });
         jPanel2.add(jTextField_lastName_user);
-        jTextField_lastName_user.setBounds(200, 100, 220, 30);
+        jTextField_lastName_user.setBounds(200, 140, 220, 30);
 
         jComboBox_jud_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jComboBox_jud_user.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Alba", "Arad", "Arges", "Bacau", "Bihor", "Bistrita Nasaud", "Botosani", "Braila", "Brasov", "Bucuresti", "Buzau", "Calaras", "Caras Severin", "Cluj", "Constanta", "Covasna", "Dambovita", "Galati", "Giurgiu", "Gorj", "Harghita", "Hunedoara", "Ialomita", "Iasi", "Ilfov", "Maramures", "Mehedinti", "Mures", "Neamt", "Olt", "Prahova", "Salaj", "Satul Mare", "Sibiu", "Suceava", "Teleorman", "Timis", "Tulcea", "Valcia", "Vaslui", "Vrancea" }));
         jComboBox_jud_user.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel2.add(jComboBox_jud_user);
-        jComboBox_jud_user.setBounds(200, 220, 220, 30);
+        jComboBox_jud_user.setBounds(200, 260, 220, 30);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setText("Adresa :");
         jPanel2.add(jLabel4);
-        jLabel4.setBounds(50, 340, 65, 30);
+        jLabel4.setBounds(50, 380, 65, 30);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setText("Sex :");
         jPanel2.add(jLabel5);
-        jLabel5.setBounds(50, 260, 40, 30);
+        jLabel5.setBounds(50, 300, 40, 30);
 
         buttonGroup_gender.add(jRadioButton_m_user);
         jRadioButton_m_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -257,22 +316,27 @@ public class CreateAcount extends javax.swing.JFrame {
         jRadioButton_m_user.setText("Masculin");
         jRadioButton_m_user.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel2.add(jRadioButton_m_user);
-        jRadioButton_m_user.setBounds(200, 260, 75, 30);
+        jRadioButton_m_user.setBounds(200, 300, 75, 30);
 
         buttonGroup_gender.add(jRadioButton_f_user);
         jRadioButton_f_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jRadioButton_f_user.setText("Feminin");
         jRadioButton_f_user.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel2.add(jRadioButton_f_user);
-        jRadioButton_f_user.setBounds(290, 260, 71, 30);
+        jRadioButton_f_user.setBounds(290, 300, 71, 30);
 
         jTextArea_address_user.setColumns(20);
         jTextArea_address_user.setRows(4);
         jTextArea_address_user.setTabSize(6);
+        jTextArea_address_user.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextArea_address_userKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTextArea_address_user);
 
         jPanel2.add(jScrollPane1);
-        jScrollPane1.setBounds(200, 340, 220, 78);
+        jScrollPane1.setBounds(200, 380, 220, 78);
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(0, 0, 255));
@@ -284,9 +348,9 @@ public class CreateAcount extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jLabel7);
-        jLabel7.setBounds(200, 500, 95, 17);
+        jLabel7.setBounds(200, 540, 95, 17);
         jPanel2.add(jSeparator2);
-        jSeparator2.setBounds(50, 490, 370, 2);
+        jSeparator2.setBounds(50, 530, 370, 2);
 
         jButton_create_user.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton_create_user.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autovehicole/imgAutovehicole/if_user_male_add_44485.png"))); // NOI18N
@@ -298,55 +362,55 @@ public class CreateAcount extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jButton_create_user);
-        jButton_create_user.setBounds(200, 440, 220, 45);
+        jButton_create_user.setBounds(200, 480, 220, 45);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel8.setText("Functie :");
         jPanel2.add(jLabel8);
-        jLabel8.setBounds(50, 300, 68, 30);
+        jLabel8.setBounds(50, 340, 68, 30);
 
         jComboBox_function_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jComboBox_function_user.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Operator", "Inspector", "Administrator", "Altele" }));
         jComboBox_function_user.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel2.add(jComboBox_function_user);
-        jComboBox_function_user.setBounds(200, 300, 220, 30);
+        jComboBox_function_user.setBounds(200, 340, 220, 30);
         jPanel2.add(jSeparator3);
         jSeparator3.setBounds(50, 50, 370, 7);
 
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autovehicole/imgAutovehicole/user-groups-frenchnavy-256px-120x120.png"))); // NOI18N
         jPanel2.add(jLabel9);
-        jLabel9.setBounds(50, 370, 120, 120);
+        jLabel9.setBounds(50, 410, 120, 120);
 
         jLabel_wrong_firstName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel_wrong_firstName.setIcon(new javax.swing.ImageIcon("C:\\Users\\Calin-Alex\\Desktop\\POZE PROIECT\\poze proiect autovehicole\\if_Erase_32464.png")); // NOI18N
         jPanel2.add(jLabel_wrong_firstName);
-        jLabel_wrong_firstName.setBounds(430, 60, 30, 30);
+        jLabel_wrong_firstName.setBounds(430, 100, 30, 30);
 
         jLabel_wrong_lastName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel_wrong_lastName.setIcon(new javax.swing.ImageIcon("C:\\Users\\Calin-Alex\\Desktop\\POZE PROIECT\\poze proiect autovehicole\\if_Erase_32464.png")); // NOI18N
         jPanel2.add(jLabel_wrong_lastName);
-        jLabel_wrong_lastName.setBounds(430, 100, 30, 30);
+        jLabel_wrong_lastName.setBounds(430, 140, 30, 30);
 
         jLabel_wrong_address.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel_wrong_address.setIcon(new javax.swing.ImageIcon("C:\\Users\\Calin-Alex\\Desktop\\POZE PROIECT\\poze proiect autovehicole\\if_Erase_32464.png")); // NOI18N
         jPanel2.add(jLabel_wrong_address);
-        jLabel_wrong_address.setBounds(430, 360, 30, 30);
+        jLabel_wrong_address.setBounds(430, 400, 30, 30);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel10.setText("Repeta parola : ");
         jPanel2.add(jLabel10);
-        jLabel10.setBounds(50, 180, 140, 30);
+        jLabel10.setBounds(50, 220, 140, 30);
 
         jLabel_wrong_password_repeat.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel_wrong_password_repeat.setIcon(new javax.swing.ImageIcon("C:\\Users\\Calin-Alex\\Desktop\\POZE PROIECT\\poze proiect autovehicole\\if_Erase_32464.png")); // NOI18N
         jPanel2.add(jLabel_wrong_password_repeat);
-        jLabel_wrong_password_repeat.setBounds(430, 180, 30, 30);
+        jLabel_wrong_password_repeat.setBounds(430, 220, 30, 30);
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel11.setText("Parola : ");
         jPanel2.add(jLabel11);
-        jLabel11.setBounds(50, 140, 66, 30);
+        jLabel11.setBounds(50, 180, 66, 30);
 
         jPasswordField_repeat_password_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jPasswordField_repeat_password_user.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -355,22 +419,46 @@ public class CreateAcount extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jPasswordField_repeat_password_user);
-        jPasswordField_repeat_password_user.setBounds(200, 180, 220, 30);
+        jPasswordField_repeat_password_user.setBounds(200, 220, 220, 30);
 
         jPasswordField_password_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jPasswordField_password_user.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jPasswordField_password_userKeyReleased(evt);
+            }
+        });
         jPanel2.add(jPasswordField_password_user);
-        jPasswordField_password_user.setBounds(200, 140, 220, 30);
+        jPasswordField_password_user.setBounds(200, 180, 220, 30);
 
         jLabel_wrong_password.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel_wrong_password.setIcon(new javax.swing.ImageIcon("C:\\Users\\Calin-Alex\\Desktop\\POZE PROIECT\\poze proiect autovehicole\\if_Erase_32464.png")); // NOI18N
         jPanel2.add(jLabel_wrong_password);
-        jLabel_wrong_password.setBounds(430, 140, 30, 30);
+        jLabel_wrong_password.setBounds(430, 180, 30, 30);
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel6.setText("Nume :");
+        jPanel2.add(jLabel6);
+        jLabel6.setBounds(50, 100, 58, 30);
+
+        jTextField_userName_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jTextField_userName_user.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField_userName_userKeyReleased(evt);
+            }
+        });
+        jPanel2.add(jTextField_userName_user);
+        jTextField_userName_user.setBounds(200, 60, 220, 30);
+
+        jLabel_wrong_user.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel_wrong_user.setIcon(new javax.swing.ImageIcon("C:\\Users\\Calin-Alex\\Desktop\\POZE PROIECT\\poze proiect autovehicole\\if_Erase_32464.png")); // NOI18N
+        jPanel2.add(jLabel_wrong_user);
+        jLabel_wrong_user.setBounds(430, 60, 30, 30);
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(10, 40, 490, 530);
+        jPanel2.setBounds(10, 40, 490, 570);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(0, 0, 510, 580);
+        jPanel1.setBounds(0, 0, 510, 620);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -404,15 +492,43 @@ public class CreateAcount extends javax.swing.JFrame {
 
     private void jPasswordField_repeat_password_userKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordField_repeat_password_userKeyReleased
         // TODO add your handling code here:
-        String password = jPasswordField_password_user.getText();
-        String password_repeat = jPasswordField_repeat_password_user.getText();
-        
-        if( password.equals(password_repeat)){
+        if( jPasswordField_password_user.getText().equals(jPasswordField_repeat_password_user.getText())){
             jLabel_wrong_password_repeat.setVisible(false);
         }else{
             jLabel_wrong_password_repeat.setVisible(true);
         }
     }//GEN-LAST:event_jPasswordField_repeat_password_userKeyReleased
+
+    private void jTextField_userName_userKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_userName_userKeyReleased
+        // TODO add your handling code here:
+        UnicityUser();    
+    }//GEN-LAST:event_jTextField_userName_userKeyReleased
+
+    private void jTextField_firstName_userKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_firstName_userKeyReleased
+        // TODO add your handling code here:
+        jLabel_wrong_firstName.setVisible(false);
+    }//GEN-LAST:event_jTextField_firstName_userKeyReleased
+
+    private void jTextField_lastName_userKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_lastName_userKeyReleased
+        // TODO add your handling code here:
+        jLabel_wrong_lastName.setVisible(false);
+    }//GEN-LAST:event_jTextField_lastName_userKeyReleased
+
+    private void jPasswordField_password_userKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordField_password_userKeyReleased
+        // TODO add your handling code here:
+        jLabel_wrong_password.setVisible(false);
+        
+        if(jPasswordField_repeat_password_user.getText().equals(jPasswordField_password_user.getText())){
+            jLabel_wrong_password_repeat.setVisible(false);
+        }else{
+            jLabel_wrong_password_repeat.setVisible(true);
+        }
+    }//GEN-LAST:event_jPasswordField_password_userKeyReleased
+
+    private void jTextArea_address_userKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextArea_address_userKeyReleased
+        // TODO add your handling code here:
+        jLabel_wrong_address.setVisible(false);
+    }//GEN-LAST:event_jTextArea_address_userKeyReleased
 
     /**
      * @param args the command line arguments
@@ -464,6 +580,7 @@ public class CreateAcount extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -472,6 +589,7 @@ public class CreateAcount extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel_wrong_lastName;
     private javax.swing.JLabel jLabel_wrong_password;
     private javax.swing.JLabel jLabel_wrong_password_repeat;
+    private javax.swing.JLabel jLabel_wrong_user;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPasswordField jPasswordField_password_user;
@@ -484,5 +602,6 @@ public class CreateAcount extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea_address_user;
     private javax.swing.JTextField jTextField_firstName_user;
     private javax.swing.JTextField jTextField_lastName_user;
+    private javax.swing.JTextField jTextField_userName_user;
     // End of variables declaration//GEN-END:variables
 }
