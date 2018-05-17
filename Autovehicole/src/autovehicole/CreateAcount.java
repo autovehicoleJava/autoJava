@@ -140,14 +140,15 @@ public class CreateAcount extends javax.swing.JFrame {
             jLabel_wrong_address.setVisible(false);
         }
         
+        GetCurrentDate date = new GetCurrentDate();  
         
         // insert the data in data base if no fields is empty
         if( !userName_user.equals("") && !UnicityUser() && !firstName.equals("") && !lastName.equals("") &&
             !password.equals("") && !address.equals("") &&  password.equals(jPasswordField_repeat_password_user.getText())   )
         {
-            String query = "INSERT INTO user( userName_user, firstName_user, lastName_user, address_user, password_user, gender_user, function_user, jud_user"
+            String query = "INSERT INTO user( userName_user, firstName_user, lastName_user, address_user, password_user, gender_user, function_user, jud_user, date_user"
                     + ")"+" VALUES ("
-                    + "'"+userName_user+"','"+firstName+"','"+lastName+"','"+address+"','"+password+"','"+gender+"','"+function+"','"+jud+"')";
+                    + "'"+userName_user+"','"+firstName+"','"+lastName+"','"+address+"','"+password+"','"+gender+"','"+function+"','"+jud+"','"+date.CurrentDate()+"')";
             
             executQuery this_query = new executQuery();
             this_query.executeSqlQuery(query, "Utilizator adaugat cu succes in baza de date!", "Inregistrare utilizator");

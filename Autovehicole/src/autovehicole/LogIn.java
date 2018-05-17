@@ -5,6 +5,8 @@
  */
 package autovehicole;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 
@@ -22,6 +24,9 @@ public class LogIn extends javax.swing.JFrame {
         jLabel_password_wrong.setVisible(false);
     }
     
+   
+    
+    
     
     public boolean UnicityUser(){
         boolean yes = false;
@@ -38,6 +43,36 @@ public class LogIn extends javax.swing.JFrame {
         
         return yes;
     }
+    
+
+    
+     //Selectarea evenimentelor din baza de date in functie de selectie
+    public String GetFunction(){
+        String function = "";
+        
+        String query = "SELECT function_user FROM `user` WHERE `userName_user`= '"+jTextField_user.getText()+"' AND `password_user`= '"+jPasswordField_password.getText()+"' ";
+              
+        Connect con = new Connect();
+        Statement st;
+        ResultSet rs;
+        
+        try {
+            st = con.getConnection().createStatement();
+            rs = st.executeQuery(query);
+ 
+            while (rs.next())
+            {
+                function = rs.getString("function_user");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }  
+        return function;
+    }    
+    
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -152,10 +187,6 @@ public class LogIn extends javax.swing.JFrame {
     private void jButton_logareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_logareActionPerformed
         // TODO add your handling code here:
 
-        
-        
-        
-        
         String user = jTextField_user.getText();
         String password = jPasswordField_password.getText();
         
@@ -171,13 +202,20 @@ public class LogIn extends javax.swing.JFrame {
         }
         
         if( !user.equals("") && !password.equals("") && UnicityUser() ){
+            
+            WriteInFile writeIn = new WriteInFile();
+            writeIn.setTextInFile(user, GetFunction());
+            
+            
             this.setVisible(false);
             Menu window = new Menu();
             window.setVisible(true);
         }else{
             jLabel_password_wrong.setVisible(true);
             jLabel_user_wrong.setVisible(true);
+            
             JOptionPane.showMessageDialog(null, "User sau parola incorecta!", "Atentie!", JOptionPane.INFORMATION_MESSAGE);
+            
             jLabel_password_wrong.setVisible(false);
             jLabel_user_wrong.setVisible(false);
         }

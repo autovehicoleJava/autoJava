@@ -25,9 +25,9 @@ public class executQuery extends Connect {
             st = con.createStatement();
             if((st.executeUpdate(query))== 1)
             {
-                JOptionPane.showMessageDialog(null, message + " a fost editat cu succes!" , title ,JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, message , title ,JOptionPane.INFORMATION_MESSAGE);
             }else{
-                JOptionPane.showMessageDialog(null, "Erroare "+message+"!","Erroare",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Erroare "+message+"!", title,JOptionPane.INFORMATION_MESSAGE);
             }
         }catch (Exception ex){
             ex.printStackTrace();

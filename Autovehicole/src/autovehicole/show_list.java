@@ -16,6 +16,10 @@ public class show_list extends javax.swing.JFrame {
     public show_list() {
         initComponents();
         
+        GetCurrentDate date = new GetCurrentDate();
+        
+        jLabel_currentDate.setText(date.CurrentDate());
+        
         this.setLocationRelativeTo(null);
     }
 
@@ -34,16 +38,22 @@ public class show_list extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
+        jLabel_currentDate = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel_userName = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(850, 510));
+        setPreferredSize(new java.awt.Dimension(1020, 510));
         setResizable(false);
         getContentPane().setLayout(null);
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 102));
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(153, 153, 153), new java.awt.Color(204, 204, 204), new java.awt.Color(153, 153, 153), new java.awt.Color(204, 204, 204)));
+        jPanel1.setPreferredSize(new java.awt.Dimension(1020, 510));
         jPanel1.setLayout(null);
 
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -70,7 +80,7 @@ public class show_list extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButton_LogOut);
-        jButton_LogOut.setBounds(700, 10, 140, 40);
+        jButton_LogOut.setBounds(870, 10, 140, 40);
 
         jPanel2.setLayout(null);
 
@@ -88,10 +98,14 @@ public class show_list extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jPanel2.add(jScrollPane1);
-        jScrollPane1.setBounds(10, 70, 810, 360);
+        jScrollPane1.setBounds(20, 20, 960, 180);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autovehicole/imgAutovehicole/free-wallpaper-11.jpg"))); // NOI18N
+        jPanel2.add(jLabel1);
+        jLabel1.setBounds(0, 0, 1000, 440);
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(10, 60, 830, 440);
+        jPanel2.setBounds(10, 60, 1000, 440);
 
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autovehicole/imgAutovehicole/if_minus_71007.png"))); // NOI18N
@@ -106,10 +120,34 @@ public class show_list extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jLabel14);
-        jLabel14.setBounds(650, 10, 40, 40);
+        jLabel14.setBounds(820, 10, 40, 40);
+
+        jLabel_currentDate.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel_currentDate.setForeground(new java.awt.Color(51, 204, 255));
+        jLabel_currentDate.setText("Date curenta:");
+        jPanel1.add(jLabel_currentDate);
+        jLabel_currentDate.setBounds(500, 30, 100, 15);
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(51, 204, 255));
+        jLabel3.setText("Date curenta:");
+        jPanel1.add(jLabel3);
+        jLabel3.setBounds(400, 30, 100, 15);
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Nume utilizator:");
+        jPanel1.add(jLabel4);
+        jLabel4.setBounds(400, 10, 100, 15);
+
+        jLabel_userName.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel_userName.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel_userName.setText("Nume utilizator:");
+        jPanel1.add(jLabel_userName);
+        jLabel_userName.setBounds(500, 10, 100, 15);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(0, 0, 850, 510);
+        jPanel1.setBounds(0, 0, 1020, 510);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -123,6 +161,9 @@ public class show_list extends javax.swing.JFrame {
 
     private void jButton_LogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LogOutActionPerformed
         // TODO add your handling code here:
+        WriteInFile writeIn = new WriteInFile();
+        writeIn.setTextInFile("", "");
+        
         this.setVisible(false);
         LogIn window = new LogIn();
         window.setVisible(true);
@@ -170,8 +211,13 @@ public class show_list extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton_LogOut;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel_currentDate;
+    private javax.swing.JLabel jLabel_userName;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

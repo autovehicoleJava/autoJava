@@ -1283,7 +1283,7 @@ public class add_edit extends javax.swing.JFrame {
 
         jLabel26.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel26.setForeground(new java.awt.Color(51, 51, 255));
-        jLabel26.setText("nume");
+        jLabel26.setText("Nicula Calin Alexandru");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

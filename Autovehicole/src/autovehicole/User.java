@@ -21,8 +21,9 @@ public class User {
     private String gender;
     private String function;
     private String jud;
+    private String date;
 
-    public User(int id, String userName, String firstName, String lastName, String address, String password, String gender, String function, String jud) {
+    public User(int id, String userName, String firstName, String lastName, String address, String password, String gender, String function, String jud, String date) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
@@ -32,9 +33,8 @@ public class User {
         this.gender = gender;
         this.function = function;
         this.jud = jud;
+        this.date = date;
     }
-    
-
 
     /**
      * @return the id
@@ -48,6 +48,20 @@ public class User {
      */
     public void setId(int id) {
         this.id = id;
+    }
+
+    /**
+     * @return the userName
+     */
+    public String getUserName() {
+        return userName;
+    }
+
+    /**
+     * @param userName the userName to set
+     */
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     /**
@@ -76,6 +90,34 @@ public class User {
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    /**
+     * @return the address
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * @param address the address to set
+     */
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    /**
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * @param password the password to set
+     */
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     /**
@@ -121,48 +163,20 @@ public class User {
     }
 
     /**
-     * @return the address
+     * @return the date
      */
-    public String getAddress() {
-        return address;
+    public String getDate() {
+        return date;
     }
 
     /**
-     * @param address the address to set
+     * @param date the date to set
      */
-    public void setAddress(String address) {
-        this.address = address;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    /**
-     * @return the password
-     */
-    public String getPassword() {
-        return password;
-    }
 
-    /**
-     * @param password the password to set
-     */
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    /**
-     * @return the userName
-     */
-    public String getUserName() {
-        return userName;
-    }
-
-    /**
-     * @param userName the userName to set
-     */
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-    
- 
     
     
 }

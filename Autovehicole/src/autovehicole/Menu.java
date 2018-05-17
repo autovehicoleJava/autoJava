@@ -6,6 +6,11 @@
 package autovehicole;
 
 import java.awt.Frame;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+
 
 
 public class Menu extends javax.swing.JFrame {
@@ -16,8 +21,39 @@ public class Menu extends javax.swing.JFrame {
     public Menu() {
         initComponents();
         
+        jButton_AddEdit_User.setEnabled(false);
+        jButton_AddEdit.setEnabled(false);
+        
+        GetCurrentDate date = new GetCurrentDate();
+        jLabel_currentDate.setText(date.CurrentDate());
+        
+        getPermission();
+       
         this.setLocationRelativeTo(null);
     }
+    
+    
+    
+    // set permission acces for users
+    public void getPermission(){
+        ReadFromFile user = new ReadFromFile();
+        ReadFromFile function = new ReadFromFile();
+          
+        jLabel_userName.setText(user.getUser());
+        
+        String func = function.getFunction();
+
+        if( func.equals("Administrator")){
+            jButton_AddEdit_User.setEnabled(true);
+            jButton_AddEdit.setEnabled(true);
+        }
+        if(func.equals("Inspector")){
+            jButton_AddEdit.setEnabled(true);
+        }
+    }
+
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -33,10 +69,13 @@ public class Menu extends javax.swing.JFrame {
         jButton_ListSerch = new javax.swing.JButton();
         jButton_AddEdit_User = new javax.swing.JButton();
         jButton_AddEdit = new javax.swing.JButton();
-        jButton_LogOut = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        jButton_LogOut = new javax.swing.JButton();
+        jLabel_currentDate = new javax.swing.JLabel();
+        jLabel_userName = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBounds(new java.awt.Rectangle(4, 4, 630, 400));
@@ -93,6 +132,10 @@ public class Menu extends javax.swing.JFrame {
         jPanel2.add(jButton_AddEdit);
         jButton_AddEdit.setBounds(70, 110, 460, 50);
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autovehicole/imgAutovehicole/free-wallpaper-11.jpg"))); // NOI18N
+        jPanel2.add(jLabel1);
+        jLabel1.setBounds(0, 0, 610, 330);
+
         jPanel3.add(jPanel2);
         jPanel2.setBounds(10, 60, 610, 330);
 
@@ -109,17 +152,17 @@ public class Menu extends javax.swing.JFrame {
         jPanel3.add(jButton_LogOut);
         jButton_LogOut.setBounds(480, 10, 140, 40);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Date curenta:");
-        jPanel3.add(jLabel2);
-        jLabel2.setBounds(10, 30, 100, 15);
+        jLabel_currentDate.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel_currentDate.setForeground(new java.awt.Color(51, 204, 255));
+        jLabel_currentDate.setText("Date curenta:");
+        jPanel3.add(jLabel_currentDate);
+        jLabel_currentDate.setBounds(110, 30, 100, 15);
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Nume utilizator:");
-        jPanel3.add(jLabel1);
-        jLabel1.setBounds(10, 10, 100, 15);
+        jLabel_userName.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel_userName.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel_userName.setText("Nume utilizator:");
+        jPanel3.add(jLabel_userName);
+        jLabel_userName.setBounds(110, 10, 100, 15);
 
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autovehicole/imgAutovehicole/if_minus_71007.png"))); // NOI18N
@@ -135,6 +178,18 @@ public class Menu extends javax.swing.JFrame {
         });
         jPanel3.add(jLabel14);
         jLabel14.setBounds(430, 10, 40, 40);
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(51, 204, 255));
+        jLabel3.setText("Date curenta:");
+        jPanel3.add(jLabel3);
+        jLabel3.setBounds(10, 30, 100, 15);
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("Nume utilizator:");
+        jPanel3.add(jLabel4);
+        jLabel4.setBounds(10, 10, 100, 15);
 
         getContentPane().add(jPanel3);
         jPanel3.setBounds(0, 0, 630, 400);
@@ -158,6 +213,9 @@ public class Menu extends javax.swing.JFrame {
 
     private void jButton_LogOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_LogOutActionPerformed
         // TODO add your handling code here:
+        WriteInFile writeIn = new WriteInFile();
+        writeIn.setTextInFile("", "");
+        
         this.setVisible(false);
         LogIn window = new LogIn();
         window.setVisible(true);
@@ -167,7 +225,7 @@ public class Menu extends javax.swing.JFrame {
     private void jButton_AddEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_AddEditActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-        add_edit window = new add_edit();
+        Add_cars window = new Add_cars();
         window.setVisible(true);
     }//GEN-LAST:event_jButton_AddEditActionPerformed
 
@@ -218,7 +276,10 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JButton jButton_LogOut;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel_currentDate;
+    private javax.swing.JLabel jLabel_userName;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     // End of variables declaration//GEN-END:variables

@@ -66,7 +66,8 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
             {
                 user = new User(rs.getInt("id_user"),rs.getString("userName_user"), rs.getString("firstName_user"), 
                         rs.getString("lastName_user"), rs.getString("address_user"), rs.getString("password_user"),
-                        rs.getString("gender_user"), rs.getString("function_user"), rs.getString("jud_user"));
+                        rs.getString("gender_user"), rs.getString("function_user"), rs.getString("jud_user"),
+                        rs.getString("date_user"));
                 userList.add(user);
             }
         }catch (Exception e){
@@ -82,8 +83,8 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
     {
         ArrayList<User> list= getUserList();
         DefaultTableModel model = (DefaultTableModel)jTable_show_users.getModel();
-        Object[] row = new Object[9];
-        for(int i = 0; i< list.size(); i++)
+        Object[] row = new Object[10];
+        for(int i = 0; i < list.size(); i++)
         {
             row[0] = list.get(i).getId();
             row[1] = list.get(i).getUserName();
@@ -94,6 +95,7 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
             row[6] = list.get(i).getGender();
             row[7] = list.get(i).getFunction();
             row[8] = list.get(i).getJud();
+            row[9] = list.get(i).getDate();
             
             model.addRow(row);
           
@@ -117,7 +119,7 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
     
     
     public void SetEnebleTrus(){
-        jTextField_userName_user.setEnabled(true);
+      //  jTextField_userName_user.setEnabled(true);
         jTextField_firstName_user.setEnabled(true);
         jTextField_lastName_user.setEnabled(true);
         jPasswordField_password_user.setEnabled(true);
@@ -147,10 +149,9 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
     
     // function for go back to login panel
     public void GoBackToLogin(){
-        if( !jTextField_firstName_user.getText().equals("") || !jTextField_lastName_user.getText().equals("") 
-            || !jPasswordField_password_user.getText().equals("") || !jTextArea_address_user.getText().equals("") )
+        if( jButton_create_user.isEnabled() )
         {
-          int yes_no =  JOptionPane.showConfirmDialog(null, "Vrei sa renunti la crearea noului cont?", "Creare cont nou.", JOptionPane.YES_NO_OPTION);
+          int yes_no =  JOptionPane.showConfirmDialog(null, "Vrei sa renunti la editarea contului?", "Editare cont.", JOptionPane.YES_NO_OPTION);
           
           if( yes_no == 0){
                 this.setVisible(false);
@@ -206,13 +207,18 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
             jLabel_wrong_address.setVisible(false);
         }
                 
+        int i = jTable_show_users.getSelectedRow();
+        TableModel model = jTable_show_users.getModel();
+        String date = model.getValueAt(i, 8).toString();
         
-        if( !userName_user.equals("")  )
+        System.out.println(date);
+        if( !firstName.equals("") && !lastName.equals("") &&
+            !password.equals("") && !address.equals("") &&  password.equals(jPasswordField_repeat_password_user.getText())  )
         {
-            String query = "UPDATE `user` SET `userName_user`='"+userName_user+"',`firstName_user`='"+firstName+"',`lastName_user`='"+lastName+"',`address_user`='"+address+"',`password_user`='"+password+"',`gender_user`='"+gender+"',`function_user`='"+function+"',`jud_user`='"+jud+"' WHERE `userName_user`= '"+userName_user+"' ";
+            String query = "UPDATE `user` SET `userName_user`='"+userName_user+"',`firstName_user`='"+firstName+"',`lastName_user`='"+lastName+"',`address_user`='"+address+"',`password_user`='"+password+"',`gender_user`='"+gender+"',`function_user`='"+function+"',`jud_user`='"+jud+"',`date_user`='"+date+"' WHERE `userName_user`= '"+userName_user+"' ";
             
             executQuery this_query = new executQuery();
-            this_query.executeSqlQuery(query, "Utilizator", "Editare utilizator");
+            this_query.executeSqlQuery(query, "Utilizator a fost editat cu succes!", "Editare utilizator");
           
             SetEnebleFalse();
             EmptyTheFields();
@@ -247,6 +253,7 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jLabel15 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTextField_firstName_user = new javax.swing.JTextField();
@@ -260,13 +267,9 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
         jRadioButton_f_user = new javax.swing.JRadioButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea_address_user = new javax.swing.JTextArea();
-        jLabel7 = new javax.swing.JLabel();
-        jSeparator2 = new javax.swing.JSeparator();
         jButton_create_user = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jComboBox_function_user = new javax.swing.JComboBox<>();
-        jSeparator3 = new javax.swing.JSeparator();
-        jLabel9 = new javax.swing.JLabel();
         jLabel_wrong_firstName = new javax.swing.JLabel();
         jLabel_wrong_lastName = new javax.swing.JLabel();
         jLabel_wrong_address = new javax.swing.JLabel();
@@ -279,10 +282,12 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jTextField_userName_user = new javax.swing.JTextField();
         jLabel_wrong_user = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(1010, 580));
+        setPreferredSize(new java.awt.Dimension(1010, 620));
         setResizable(false);
         getContentPane().setLayout(null);
 
@@ -336,17 +341,9 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "User", "Nume", "Prenume", "Adresa", "Parola", "Sex", "Functie", "Judet"
+                "Id", "User", "Nume", "Prenume", "Adresa", "Parola", "Sex", "Functie", "Judet", "Data"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         jTable_show_users.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable_show_usersMouseClicked(evt);
@@ -354,20 +351,44 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(jTable_show_users);
         if (jTable_show_users.getColumnModel().getColumnCount() > 0) {
-            jTable_show_users.getColumnModel().getColumn(0).setMinWidth(30);
-            jTable_show_users.getColumnModel().getColumn(0).setPreferredWidth(30);
-            jTable_show_users.getColumnModel().getColumn(0).setMaxWidth(30);
+            jTable_show_users.getColumnModel().getColumn(0).setMinWidth(40);
+            jTable_show_users.getColumnModel().getColumn(0).setPreferredWidth(40);
+            jTable_show_users.getColumnModel().getColumn(0).setMaxWidth(40);
+            jTable_show_users.getColumnModel().getColumn(1).setMinWidth(80);
+            jTable_show_users.getColumnModel().getColumn(1).setPreferredWidth(80);
+            jTable_show_users.getColumnModel().getColumn(1).setMaxWidth(80);
+            jTable_show_users.getColumnModel().getColumn(2).setMinWidth(80);
+            jTable_show_users.getColumnModel().getColumn(2).setPreferredWidth(80);
+            jTable_show_users.getColumnModel().getColumn(2).setMaxWidth(80);
+            jTable_show_users.getColumnModel().getColumn(3).setMinWidth(125);
+            jTable_show_users.getColumnModel().getColumn(3).setPreferredWidth(125);
+            jTable_show_users.getColumnModel().getColumn(3).setMaxWidth(125);
+            jTable_show_users.getColumnModel().getColumn(5).setMinWidth(100);
+            jTable_show_users.getColumnModel().getColumn(5).setPreferredWidth(100);
+            jTable_show_users.getColumnModel().getColumn(5).setMaxWidth(100);
+            jTable_show_users.getColumnModel().getColumn(6).setMinWidth(65);
+            jTable_show_users.getColumnModel().getColumn(6).setPreferredWidth(65);
+            jTable_show_users.getColumnModel().getColumn(6).setMaxWidth(65);
+            jTable_show_users.getColumnModel().getColumn(7).setMinWidth(90);
+            jTable_show_users.getColumnModel().getColumn(7).setPreferredWidth(90);
+            jTable_show_users.getColumnModel().getColumn(7).setMaxWidth(90);
+            jTable_show_users.getColumnModel().getColumn(8).setMinWidth(80);
+            jTable_show_users.getColumnModel().getColumn(8).setPreferredWidth(80);
+            jTable_show_users.getColumnModel().getColumn(8).setMaxWidth(80);
+            jTable_show_users.getColumnModel().getColumn(9).setMinWidth(80);
+            jTable_show_users.getColumnModel().getColumn(9).setPreferredWidth(80);
+            jTable_show_users.getColumnModel().getColumn(9).setMaxWidth(80);
         }
 
         jPanel3.add(jScrollPane2);
-        jScrollPane2.setBounds(10, 16, 480, 450);
+        jScrollPane2.setBounds(10, 20, 970, 190);
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autovehicole/imgAutovehicole/if_user_close_security_103764.png"))); // NOI18N
         jButton1.setText("Accepta");
         jButton1.setToolTipText("Ofera permisiune de a deveni user.");
         jPanel3.add(jButton1);
-        jButton1.setBounds(350, 475, 140, 45);
+        jButton1.setBounds(820, 220, 160, 45);
 
         jButton2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autovehicole/imgAutovehicole/if_user_male_delete_44487.png"))); // NOI18N
@@ -379,7 +400,7 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
             }
         });
         jPanel3.add(jButton2);
-        jButton2.setBounds(10, 475, 140, 45);
+        jButton2.setBounds(440, 220, 160, 45);
 
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autovehicole/imgAutovehicole/if_user_male_edit_44491.png"))); // NOI18N
@@ -391,18 +412,24 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
             }
         });
         jPanel3.add(jButton3);
-        jButton3.setBounds(180, 475, 140, 45);
+        jButton3.setBounds(630, 220, 160, 45);
+
+        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autovehicole/imgAutovehicole/free-wallpaper-11.jpg"))); // NOI18N
+        jPanel3.add(jLabel15);
+        jLabel15.setBounds(0, 0, 990, 280);
 
         jPanel1.add(jPanel3);
-        jPanel3.setBounds(500, 40, 500, 530);
+        jPanel3.setBounds(10, 40, 990, 280);
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 255), 2, true), "Creaza un utilizator nou :", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Arial", 1, 24), new java.awt.Color(0, 0, 255))); // NOI18N
+        jPanel2.setBackground(new java.awt.Color(243, 243, 243));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 255), 2, true), "Editare utilizatori:", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Arial", 1, 24), new java.awt.Color(0, 0, 255))); // NOI18N
         jPanel2.setLayout(null);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("User :");
         jPanel2.add(jLabel1);
-        jLabel1.setBounds(50, 60, 47, 30);
+        jLabel1.setBounds(110, 40, 47, 30);
 
         jTextField_firstName_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTextField_firstName_user.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -411,17 +438,18 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jTextField_firstName_user);
-        jTextField_firstName_user.setBounds(200, 100, 220, 30);
+        jTextField_firstName_user.setBounds(240, 80, 220, 30);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Prenume :");
         jPanel2.add(jLabel2);
-        jLabel2.setBounds(50, 140, 81, 30);
+        jLabel2.setBounds(110, 120, 81, 30);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel3.setText("Judet :");
         jPanel2.add(jLabel3);
-        jLabel3.setBounds(50, 260, 55, 30);
+        jLabel3.setBounds(530, 40, 55, 30);
 
         jTextField_lastName_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTextField_lastName_user.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -430,37 +458,40 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jTextField_lastName_user);
-        jTextField_lastName_user.setBounds(200, 140, 220, 30);
+        jTextField_lastName_user.setBounds(240, 120, 220, 30);
 
         jComboBox_jud_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jComboBox_jud_user.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Alba", "Arad", "Arges", "Bacau", "Bihor", "Bistrita Nasaud", "Botosani", "Braila", "Brasov", "Bucuresti", "Buzau", "Calaras", "Caras Severin", "Cluj", "Constanta", "Covasna", "Dambovita", "Galati", "Giurgiu", "Gorj", "Harghita", "Hunedoara", "Ialomita", "Iasi", "Ilfov", "Maramures", "Mehedinti", "Mures", "Neamt", "Olt", "Prahova", "Salaj", "Satul Mare", "Sibiu", "Suceava", "Teleorman", "Timis", "Tulcea", "Valcia", "Vaslui", "Vrancea" }));
         jComboBox_jud_user.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel2.add(jComboBox_jud_user);
-        jComboBox_jud_user.setBounds(200, 260, 220, 30);
+        jComboBox_jud_user.setBounds(660, 40, 220, 30);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel4.setText("Adresa :");
         jPanel2.add(jLabel4);
-        jLabel4.setBounds(50, 380, 65, 30);
+        jLabel4.setBounds(530, 120, 65, 30);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Sex :");
         jPanel2.add(jLabel5);
-        jLabel5.setBounds(50, 300, 40, 30);
+        jLabel5.setBounds(110, 240, 40, 30);
 
         buttonGroup_gender.add(jRadioButton_m_user);
         jRadioButton_m_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jRadioButton_m_user.setText("Masculin");
         jRadioButton_m_user.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jRadioButton_m_user.setOpaque(false);
         jPanel2.add(jRadioButton_m_user);
-        jRadioButton_m_user.setBounds(200, 300, 75, 30);
+        jRadioButton_m_user.setBounds(270, 240, 75, 30);
 
         buttonGroup_gender.add(jRadioButton_f_user);
         jRadioButton_f_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jRadioButton_f_user.setText("Feminin");
         jRadioButton_f_user.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jRadioButton_f_user.setOpaque(false);
         jPanel2.add(jRadioButton_f_user);
-        jRadioButton_f_user.setBounds(290, 300, 71, 30);
+        jRadioButton_f_user.setBounds(360, 240, 71, 30);
 
         jTextArea_address_user.setColumns(20);
         jTextArea_address_user.setRows(4);
@@ -473,21 +504,7 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextArea_address_user);
 
         jPanel2.add(jScrollPane1);
-        jScrollPane1.setBounds(200, 380, 220, 78);
-
-        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(0, 0, 255));
-        jLabel7.setText("Inapoi la logare.");
-        jLabel7.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel7MouseClicked(evt);
-            }
-        });
-        jPanel2.add(jLabel7);
-        jLabel7.setBounds(200, 540, 95, 17);
-        jPanel2.add(jSeparator2);
-        jSeparator2.setBounds(50, 530, 370, 2);
+        jScrollPane1.setBounds(660, 120, 220, 78);
 
         jButton_create_user.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton_create_user.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autovehicole/imgAutovehicole/if_user_male_add_44485.png"))); // NOI18N
@@ -499,55 +516,50 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jButton_create_user);
-        jButton_create_user.setBounds(200, 480, 220, 45);
+        jButton_create_user.setBounds(660, 220, 220, 45);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel8.setText("Functie :");
         jPanel2.add(jLabel8);
-        jLabel8.setBounds(50, 340, 68, 30);
+        jLabel8.setBounds(530, 80, 68, 30);
 
         jComboBox_function_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jComboBox_function_user.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Operator", "Inspector", "Administrator", "Altele" }));
         jComboBox_function_user.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel2.add(jComboBox_function_user);
-        jComboBox_function_user.setBounds(200, 340, 220, 30);
-        jPanel2.add(jSeparator3);
-        jSeparator3.setBounds(50, 50, 370, 7);
-
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autovehicole/imgAutovehicole/user-groups-frenchnavy-256px-120x120.png"))); // NOI18N
-        jPanel2.add(jLabel9);
-        jLabel9.setBounds(50, 410, 120, 120);
+        jComboBox_function_user.setBounds(660, 80, 220, 30);
 
         jLabel_wrong_firstName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel_wrong_firstName.setIcon(new javax.swing.ImageIcon("C:\\Users\\Calin-Alex\\Desktop\\POZE PROIECT\\poze proiect autovehicole\\if_Erase_32464.png")); // NOI18N
         jPanel2.add(jLabel_wrong_firstName);
-        jLabel_wrong_firstName.setBounds(430, 100, 30, 30);
+        jLabel_wrong_firstName.setBounds(460, 80, 30, 30);
 
         jLabel_wrong_lastName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel_wrong_lastName.setIcon(new javax.swing.ImageIcon("C:\\Users\\Calin-Alex\\Desktop\\POZE PROIECT\\poze proiect autovehicole\\if_Erase_32464.png")); // NOI18N
         jPanel2.add(jLabel_wrong_lastName);
-        jLabel_wrong_lastName.setBounds(430, 140, 30, 30);
+        jLabel_wrong_lastName.setBounds(460, 120, 30, 30);
 
         jLabel_wrong_address.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel_wrong_address.setIcon(new javax.swing.ImageIcon("C:\\Users\\Calin-Alex\\Desktop\\POZE PROIECT\\poze proiect autovehicole\\if_Erase_32464.png")); // NOI18N
         jPanel2.add(jLabel_wrong_address);
-        jLabel_wrong_address.setBounds(430, 400, 30, 30);
+        jLabel_wrong_address.setBounds(880, 140, 30, 30);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Repeta parola : ");
         jPanel2.add(jLabel10);
-        jLabel10.setBounds(50, 220, 140, 30);
+        jLabel10.setBounds(110, 200, 140, 30);
 
         jLabel_wrong_password_repeat.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel_wrong_password_repeat.setIcon(new javax.swing.ImageIcon("C:\\Users\\Calin-Alex\\Desktop\\POZE PROIECT\\poze proiect autovehicole\\if_Erase_32464.png")); // NOI18N
         jPanel2.add(jLabel_wrong_password_repeat);
-        jLabel_wrong_password_repeat.setBounds(430, 220, 30, 30);
+        jLabel_wrong_password_repeat.setBounds(460, 200, 30, 30);
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Parola : ");
         jPanel2.add(jLabel11);
-        jLabel11.setBounds(50, 180, 66, 30);
+        jLabel11.setBounds(110, 160, 66, 30);
 
         jPasswordField_repeat_password_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jPasswordField_repeat_password_user.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -556,7 +568,7 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jPasswordField_repeat_password_user);
-        jPasswordField_repeat_password_user.setBounds(200, 220, 220, 30);
+        jPasswordField_repeat_password_user.setBounds(240, 200, 220, 30);
 
         jPasswordField_password_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jPasswordField_password_user.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -565,17 +577,18 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jPasswordField_password_user);
-        jPasswordField_password_user.setBounds(200, 180, 220, 30);
+        jPasswordField_password_user.setBounds(240, 160, 220, 30);
 
         jLabel_wrong_password.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel_wrong_password.setIcon(new javax.swing.ImageIcon("C:\\Users\\Calin-Alex\\Desktop\\POZE PROIECT\\poze proiect autovehicole\\if_Erase_32464.png")); // NOI18N
         jPanel2.add(jLabel_wrong_password);
-        jLabel_wrong_password.setBounds(430, 180, 30, 30);
+        jLabel_wrong_password.setBounds(460, 160, 30, 30);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Nume :");
         jPanel2.add(jLabel6);
-        jLabel6.setBounds(50, 100, 58, 30);
+        jLabel6.setBounds(110, 80, 58, 30);
 
         jTextField_userName_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTextField_userName_user.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -584,15 +597,25 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jTextField_userName_user);
-        jTextField_userName_user.setBounds(200, 60, 220, 30);
+        jTextField_userName_user.setBounds(240, 40, 220, 30);
 
         jLabel_wrong_user.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel_wrong_user.setIcon(new javax.swing.ImageIcon("C:\\Users\\Calin-Alex\\Desktop\\POZE PROIECT\\poze proiect autovehicole\\if_Erase_32464.png")); // NOI18N
         jPanel2.add(jLabel_wrong_user);
-        jLabel_wrong_user.setBounds(430, 60, 30, 30);
+        jLabel_wrong_user.setBounds(460, 40, 30, 30);
+
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autovehicole/imgAutovehicole/user-groups-frenchnavy-256px-120x120.png"))); // NOI18N
+        jPanel2.add(jLabel9);
+        jLabel9.setBounds(530, 150, 120, 120);
+
+        jLabel7.setIcon(new javax.swing.ImageIcon("C:\\Users\\Calin-Alex\\Desktop\\POZE PROIECT\\poze proiect autovehicole\\35293hd.jpg")); // NOI18N
+        jLabel7.setText("jLabel7");
+        jPanel2.add(jLabel7);
+        jLabel7.setBounds(10, 30, 970, 250);
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(10, 40, 490, 570);
+        jPanel2.setBounds(10, 320, 990, 290);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 1010, 620);
@@ -625,19 +648,25 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        if ((jTextField_firstName_user.getText().equals("")) ||(jTextField_firstName_user.getText().equals("")) || (jTextField_firstName_user.getText().equals("")) || (jTextField_firstName_user.getText().equals("")) )
+        int i = jTable_show_users.getSelectedRow();
+        TableModel model = jTable_show_users.getModel(); 
+        
+        if ( jTextField_userName_user.getText().equals("") ) 
         {
              JOptionPane.showMessageDialog(null, "Selectat un utilizator pentru al sterge! " , "Atentie!" ,JOptionPane.WARNING_MESSAGE); 
         }else{
              int mesaj = JOptionPane.showConfirmDialog(null, "Vreti sa stergeti acest user? ", "Atentie", JOptionPane.OK_CANCEL_OPTION);
              if (mesaj == 0){
-              String query = "DELETE FROM `user` WHERE `id`="+jTextField_userName_user.getText() ;
+              String query = "DELETE FROM `user` WHERE `id_user`="+ model.getValueAt(i, 0).toString() ;
               
             executQuery this_query = new executQuery();
             this_query.executeSqlQuery(query, "Utilizatorul a fost sters.", "Informatii");
 
              }
         }
+        
+        RemoveUsersFromTable();
+        ShowUsers();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextField_firstName_userKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_firstName_userKeyReleased
@@ -654,11 +683,6 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
         // TODO add your handling code here:
         jLabel_wrong_address.setVisible(false);
     }//GEN-LAST:event_jTextArea_address_userKeyReleased
-
-    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-        // TODO add your handling code here:
-        GoBackToLogin();
-    }//GEN-LAST:event_jLabel7MouseClicked
 
     private void jButton_create_userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_create_userActionPerformed
         // TODO add your handling code here:
@@ -701,12 +725,12 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
         jTextField_firstName_user.setText(model.getValueAt(i, 2).toString());
         jTextField_lastName_user.setText(model.getValueAt(i, 3).toString());
         jTextArea_address_user.setText(model.getValueAt(i, 4).toString());
-        jPasswordField_password_user.setText(model.getValueAt(i, 4).toString());
+        jPasswordField_password_user.setText(model.getValueAt(i, 5).toString());
         jPasswordField_repeat_password_user.setText(model.getValueAt(i, 5).toString());
         String gender = model.getValueAt(i, 6).toString();
         String func = model.getValueAt(i, 7).toString();
         String jud = model.getValueAt(i, 8).toString();
-        System.out.println(gender);
+System.out.println(jud);
         buttonGroup_gender.clearSelection();
         if( gender.equals("Masculin") ){
             jRadioButton_m_user.setSelected(true);
@@ -720,18 +744,13 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
                 jComboBox_function_user.getModel().setSelectedItem(item);
             }
         }
-        for( int j =0; j < jComboBox_jud_user.getItemCount(); j++){
-            String item = jComboBox_jud_user.getItemAt(j).toString();
-            if( func.equals(item) ){
-                jComboBox_jud_user.getModel().setSelectedItem(item);
+        for( int t =0; t < jComboBox_jud_user.getItemCount(); t++){
+            String itemm = jComboBox_jud_user.getItemAt(t).toString();
+            if( jud.equals(itemm) ){
+                jComboBox_jud_user.getModel().setSelectedItem(itemm);
             }
         }
         
-        
-        
-        
-      
-      
      
     }//GEN-LAST:event_jTable_show_usersMouseClicked
 
@@ -784,6 +803,7 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -807,8 +827,6 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
     private javax.swing.JRadioButton jRadioButton_m_user;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JTable jTable_show_users;
     private javax.swing.JTextArea jTextArea_address_user;
     private javax.swing.JTextField jTextField_firstName_user;
