@@ -1,11 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package autovehicole;
 
 import java.awt.Frame;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 
 public class show_list extends javax.swing.JFrame {
@@ -17,11 +16,45 @@ public class show_list extends javax.swing.JFrame {
         initComponents();
         
         GetCurrentDate date = new GetCurrentDate();
-        
         jLabel_currentDate.setText(date.CurrentDate());
+        
+        ReadFromFile user = new ReadFromFile();
+        jLabel_userName.setText(user.getUser());
         
         this.setLocationRelativeTo(null);
     }
+    
+    
+//    public void ShowCars(){
+//        jTable_showInfo_cars
+//    }
+    
+    public ArrayList<Cars> getCarsList(){
+        ArrayList<Cars> carsList = new ArrayList<Cars>(); 
+
+        String query = "SELECT * FROM `cars` ";     
+        Connect con = new Connect();
+        Statement st;
+        ResultSet rs;
+        
+        try {
+            st = con.getConnection().createStatement();
+            rs = st.executeQuery(query);
+            Cars cars;
+            while (rs.next())
+            {
+                cars = new Cars(rs.getInt("id_car"),rs.getString("category_car"), rs.getString("mark_car"),
+                       rs.getString("carBody_car"), rs.getString("type_car"));
+                carsList.add(cars);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }  
+        return carsList;
+    }   
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -37,7 +70,7 @@ public class show_list extends javax.swing.JFrame {
         jButton_LogOut = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTable_showInfo_cars = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel_currentDate = new javax.swing.JLabel();
@@ -84,18 +117,15 @@ public class show_list extends javax.swing.JFrame {
 
         jPanel2.setLayout(null);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTable_showInfo_cars.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Id", "Categoria", "Marca", "Caroserie", "Tipul"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTable_showInfo_cars);
 
         jPanel2.add(jScrollPane1);
         jScrollPane1.setBounds(20, 20, 960, 180);
@@ -221,6 +251,6 @@ public class show_list extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable_showInfo_cars;
     // End of variables declaration//GEN-END:variables
 }
