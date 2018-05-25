@@ -1,4 +1,8 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package autovehicole;
 
 import java.awt.Frame;
@@ -7,7 +11,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
-
+/**
+ *
+ * @author Calin-Alex
+ */
 public class show_list extends javax.swing.JFrame {
 
     /**
