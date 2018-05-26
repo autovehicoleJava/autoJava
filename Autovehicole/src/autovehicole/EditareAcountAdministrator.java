@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package autovehicole;
 
 import java.awt.Frame;
@@ -13,10 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-/**
- *
- * @author Calin-Alex
- */
+
 public class EditareAcountAdministrator extends javax.swing.JFrame {
 
     /**
@@ -656,7 +649,7 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
         
         if ( jTextField_userName_user.getText().equals("") ) 
         {
-             JOptionPane.showMessageDialog(null, "Selectat un utilizator pentru al sterge! " , "Atentie!" ,JOptionPane.WARNING_MESSAGE); 
+             JOptionPane.showMessageDialog(null, "Selectati un utilizator pentru al sterge! " , "Atentie!" ,JOptionPane.WARNING_MESSAGE); 
         }else{
              int mesaj = JOptionPane.showConfirmDialog(null, "Vreti sa stergeti acest user? ", "Atentie", JOptionPane.OK_CANCEL_OPTION);
              if (mesaj == 0){

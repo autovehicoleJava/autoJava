@@ -5,8 +5,8 @@
         <group>
             <file>file:/C:/xampp/htdocs/Autovehicole/src/autovehicole/show_list.java</file>
             <file>file:/C:/xampp/htdocs/Autovehicole/src/autovehicole/Add_cars.java</file>
-            <file>file:/C:/xampp/htdocs/Autovehicole/src/autovehicole/Menu.java</file>
-            <file>file:/C:/xampp/htdocs/Autovehicole/src/autovehicole/add_edit.java</file>
+            <file>file:/C:/xampp/htdocs/Autovehicole/src/autovehicole/CreateAcount.java</file>
+            <file>file:/C:/xampp/htdocs/Autovehicole/src/autovehicole/EditareAcountAdministrator.java</file>
         </group>
     </open-files>
 </project-private>

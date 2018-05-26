@@ -1,16 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package autovehicole;
 
+import java.awt.Color;
 import java.awt.Frame;
 
-/**
- *
- * @author Calin-Alex
- */
+
 public class Add_cars extends javax.swing.JFrame {
 
     /**
@@ -34,6 +28,28 @@ public class Add_cars extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         
         
+    }
+    
+    
+    // Check if the user is Unique
+    public boolean UnicityRegisteredNumber(){
+        boolean yes = false;
+        String sql = "SELECT * FROM `registered` WHERE `nr_registered`= '"+jTextField_nr_inmatriculare.getText()+"'";
+        
+        ExecutQuerySimple simple_query = new ExecutQuerySimple();
+        simple_query.executeSqlQuery(sql);
+        
+        if(simple_query.getIdentic() == true){
+            jLabel_nbRegistered.setForeground(Color.red);
+            jTextField_nr_inmatriculare.setForeground(Color.red);
+            yes = true;
+        }else{
+            jLabel_nbRegistered.setForeground(Color.black);
+            jTextField_nr_inmatriculare.setForeground(Color.black);
+            yes = false;
+        }
+        
+        return yes;
     }
     
     
@@ -288,7 +304,7 @@ public class Add_cars extends javax.swing.JFrame {
         jTextField_data_revizie = new javax.swing.JTextField();
         jTextField_data_inmatricularii = new javax.swing.JTextField();
         jTextField_nr_inmatriculare = new javax.swing.JTextField();
-        jLabel12 = new javax.swing.JLabel();
+        jLabel_nbRegistered = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -879,8 +895,14 @@ public class Add_cars extends javax.swing.JFrame {
 
         jTextField_data_inmatricularii.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel12.setText("Numar de inmatriculare:");
+        jTextField_nr_inmatriculare.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField_nr_inmatriculareKeyReleased(evt);
+            }
+        });
+
+        jLabel_nbRegistered.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel_nbRegistered.setText("Numar de inmatriculare:");
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel15.setText("Data inmatricularii:");
@@ -896,7 +918,7 @@ public class Add_cars extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel12)
+                        .addComponent(jLabel_nbRegistered)
                         .addGap(29, 29, 29)
                         .addComponent(jTextField_nr_inmatriculare, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
@@ -918,7 +940,7 @@ public class Add_cars extends javax.swing.JFrame {
                 .addGap(4, 4, 4)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jTextField_nr_inmatriculare, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12))
+                    .addComponent(jLabel_nbRegistered))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jTextField_data_inmatricularii, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1169,10 +1191,18 @@ public class Add_cars extends javax.swing.JFrame {
 
     private void jButton_car_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_car_saveActionPerformed
         // TODO add your handling code here:
-        InserdCarData();
-        InserdOwnerData();
-        InserdRegisteredData();
+        if(!UnicityRegisteredNumber()){
+            InserdCarData();
+            InserdOwnerData();
+            InserdRegisteredData(); 
+        }
+        
     }//GEN-LAST:event_jButton_car_saveActionPerformed
+
+    private void jTextField_nr_inmatriculareKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField_nr_inmatriculareKeyReleased
+        // TODO add your handling code here:
+        UnicityRegisteredNumber();
+    }//GEN-LAST:event_jTextField_nr_inmatriculareKeyReleased
 
     /**
      * @param args the command line arguments
@@ -1232,7 +1262,6 @@ public class Add_cars extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> jComboBox_nationality_owner;
     private javax.swing.JComboBox<String> jComboBox_tractiune;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
@@ -1276,6 +1305,7 @@ public class Add_cars extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel_currentDate;
+    private javax.swing.JLabel jLabel_nbRegistered;
     private javax.swing.JLabel jLabel_userName;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;

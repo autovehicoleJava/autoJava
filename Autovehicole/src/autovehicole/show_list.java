@@ -1,22 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package autovehicole;
 
 import java.awt.Frame;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
-/**
- *
- * @author Calin-Alex
- */
+
 public class show_list extends javax.swing.JFrame {
 
+    public int sortare = 0;
+    public int idSelected;
+    public String selectedSort;
+    
     /**
      * Creates new form show_list
      */
@@ -31,28 +30,86 @@ public class show_list extends javax.swing.JFrame {
         
         this.setLocationRelativeTo(null);
         
+        SetSearchOf();
+        
+        SetSortOf();
+        
+        ShowAllData();
+
+    }
+    
+    
+    public void SetSortOn(){
+        jComboBox_sort.setEnabled(true);
+        jRadioButton_asc.setEnabled(true);
+        jRadioButton_desc.setEnabled(true);
+    }
+    public void SetSortOf(){
+        jComboBox_sort.setEnabled(false);
+        jRadioButton_asc.setEnabled(false);
+        jRadioButton_desc.setEnabled(false);
+    }
+    
+    
+    public void SetSearchOf(){
+        jComboBox_list_search.setEnabled(false);
+        jTextField_search.setEnabled(false);
+        jButton_search.setEnabled(false);
+    }
+    public void SetSearchOn(){
+        jComboBox_list_search.setEnabled(true);
+        jTextField_search.setEnabled(true);
+        jButton_search.setEnabled(true);
+    }
+    
+    
+    public void ShowAllData(){
+        sortare = 0;
+        GolesteTabelul();
+        
         ShowCars();
         ShowOwners();
         ShowRegistereds();
-
     }
     
     
     
     
+    //Goleste textul din tabel
+    public void GolesteTabelul()
+    {
+            //sterge tabelul
+            DefaultTableModel model = (DefaultTableModel) jTable_showInfo_registered.getModel();
+            DefaultTableModel model2 = (DefaultTableModel) jTable_showInfo_owner.getModel();
+            DefaultTableModel model3 = (DefaultTableModel) jTable_showInfo_cars.getModel();
+            model.setRowCount(0);
+            model2.setRowCount(0);
+            model3.setRowCount(0);
+            // sf st tab
+    }
     
     
     
-    
-    
-//    public void ShowCars(){
-//        jTable_showInfo_cars
-//    }
     
     public ArrayList<Cars> getCarsList(){
         ArrayList<Cars> carsList = new ArrayList<Cars>(); 
-
-        String query = "SELECT * FROM `cars` ";     
+        String query ="";
+        if( sortare == 0){
+            query = "SELECT * FROM `cars` "; 
+        }
+        if( sortare == 1 || sortare == 2 ){
+            query = "SELECT * FROM `cars` WHERE `id_car`= '"+idSelected+"'"; 
+        } 
+        if( sortare == 9){
+            if( jRadioButton_asc.isSelected()){
+                query = "SELECT * FROM `cars` ORDER BY `"+ selectedSort +"` ASC ";
+            }else if( jRadioButton_desc.isSelected()){
+                query = "SELECT * FROM `cars` ORDER BY `"+ selectedSort +"` DESC ";
+            }
+             
+        } 
+        
+        
         Connect con = new Connect();
         Statement st;
         ResultSet rs;
@@ -85,8 +142,6 @@ public class show_list extends javax.swing.JFrame {
     
     
     
-    
-    // Arata evenimentele in tabel
     public void ShowCars()
     {
         ArrayList<Cars> cars= getCarsList();
@@ -151,8 +206,20 @@ public class show_list extends javax.swing.JFrame {
     
     public ArrayList<Owner> getOwnerList(){
         ArrayList<Owner> ownerList = new ArrayList<Owner>(); 
-
-        String query = "SELECT * FROM `owner` ";     
+        
+        String query = "";
+        
+        if( sortare == 0 || sortare == 9){
+            query = "SELECT * FROM `owner` ";   
+        } 
+        if( sortare == 1){
+            query = "SELECT * FROM `owner` WHERE `id_owner`= '"+idSelected+"'"; 
+        } 
+        if( sortare == 2){
+            query = "SELECT * FROM `owner` WHERE `firstName_owner`= '"+jTextField_search.getText()+"' OR `lastName_owner`= '"+jTextField_search.getText()+"' "; 
+        } 
+        
+        
         Connect con = new Connect();
         Statement st;
         ResultSet rs;
@@ -176,7 +243,6 @@ public class show_list extends javax.swing.JFrame {
     
     
     
-    // Arata evenimentele in tabel
     public void ShowOwners()
     {
         ArrayList<Owner> owners= getOwnerList();
@@ -198,6 +264,9 @@ public class show_list extends javax.swing.JFrame {
             model2.addRow(row);
           
         }
+        if( sortare == 2 ){
+            idSelected = owners.get(0).getId_owner();
+        }
     }
     
     
@@ -205,8 +274,19 @@ public class show_list extends javax.swing.JFrame {
     
 public ArrayList<Registered> getRegisteredList(){
         ArrayList<Registered> registeredList = new ArrayList<Registered>(); 
-
-        String query = "SELECT * FROM `registered` ";     
+        
+        String query = "";  
+        if( sortare == 0 || sortare == 9){
+            query = "SELECT * FROM `registered` "; 
+        } 
+        if( sortare == 1){
+            query = "SELECT * FROM `registered` WHERE `nr_registered`= '"+jTextField_search.getText()+"'"; 
+        } 
+        if( sortare == 2 ){
+            query = "SELECT * FROM `registered` WHERE `id_registered`= '"+idSelected+"'"; 
+        } 
+        
+          
         Connect con = new Connect();
         Statement st;
         ResultSet rs;
@@ -229,7 +309,6 @@ public ArrayList<Registered> getRegisteredList(){
     
     
     
-    // Arata evenimentele in tabel
     public void ShowRegistereds()
     {
         ArrayList<Registered> registereds= getRegisteredList();
@@ -246,6 +325,10 @@ public ArrayList<Registered> getRegisteredList(){
             model3.addRow(row);
           
         }
+        if( sortare == 1 ){
+            idSelected = registereds.get(0).getId_registered();
+        }
+        
     }  
     
     
@@ -261,6 +344,7 @@ public ArrayList<Registered> getRegisteredList(){
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jButton_LogOut = new javax.swing.JButton();
@@ -277,6 +361,17 @@ public ArrayList<Registered> getRegisteredList(){
         jLayeredPane3 = new javax.swing.JLayeredPane();
         jScrollPane6 = new javax.swing.JScrollPane();
         jTable_showInfo_registered = new javax.swing.JTable();
+        jTextField_search = new javax.swing.JTextField();
+        jButton_search = new javax.swing.JButton();
+        jComboBox_list_search = new javax.swing.JComboBox<>();
+        jButton2 = new javax.swing.JButton();
+        jButton_stergere_dataCar = new javax.swing.JButton();
+        jButton_editare_dataCars = new javax.swing.JButton();
+        jComboBox_sort = new javax.swing.JComboBox<>();
+        jCheckBox_sort = new javax.swing.JCheckBox();
+        jCheckBox_search = new javax.swing.JCheckBox();
+        jRadioButton_desc = new javax.swing.JRadioButton();
+        jRadioButton_asc = new javax.swing.JRadioButton();
         jLabel14 = new javax.swing.JLabel();
         jLabel_currentDate = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -392,12 +487,12 @@ public ArrayList<Registered> getRegisteredList(){
         }
 
         jLayeredPane1.add(jScrollPane1);
-        jScrollPane1.setBounds(10, 10, 4000, 200);
+        jScrollPane1.setBounds(10, 10, 4000, 190);
 
         jScrollPane3.setViewportView(jLayeredPane1);
 
         jPanel2.add(jScrollPane3);
-        jScrollPane3.setBounds(10, 70, 1260, 240);
+        jScrollPane3.setBounds(10, 90, 1260, 230);
 
         jTable_showInfo_owner.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -429,12 +524,12 @@ public ArrayList<Registered> getRegisteredList(){
         }
 
         jLayeredPane2.add(jScrollPane4);
-        jScrollPane4.setBounds(10, 10, 750, 220);
+        jScrollPane4.setBounds(10, 10, 750, 210);
 
         jScrollPane2.setViewportView(jLayeredPane2);
 
         jPanel2.add(jScrollPane2);
-        jScrollPane2.setBounds(10, 320, 770, 240);
+        jScrollPane2.setBounds(10, 330, 770, 230);
 
         jTable_showInfo_registered.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -460,12 +555,99 @@ public ArrayList<Registered> getRegisteredList(){
         }
 
         jLayeredPane3.add(jScrollPane6);
-        jScrollPane6.setBounds(10, 10, 460, 220);
+        jScrollPane6.setBounds(10, 10, 460, 210);
 
         jScrollPane5.setViewportView(jLayeredPane3);
 
         jPanel2.add(jScrollPane5);
-        jScrollPane5.setBounds(790, 320, 480, 240);
+        jScrollPane5.setBounds(790, 330, 480, 230);
+        jPanel2.add(jTextField_search);
+        jTextField_search.setBounds(950, 15, 180, 30);
+
+        jButton_search.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        jButton_search.setText("Cautare");
+        jButton_search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_searchActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton_search);
+        jButton_search.setBounds(1140, 15, 130, 30);
+
+        jComboBox_list_search.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jComboBox_list_search.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Numarul de inmatriculare", "Nume sau prenume proprietar" }));
+        jPanel2.add(jComboBox_list_search);
+        jComboBox_list_search.setBounds(680, 15, 260, 30);
+
+        jButton2.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        jButton2.setText("Toate autoturismele");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton2);
+        jButton2.setBounds(10, 15, 160, 30);
+
+        jButton_stergere_dataCar.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        jButton_stergere_dataCar.setText("Stergere");
+        jButton_stergere_dataCar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton_stergere_dataCarActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jButton_stergere_dataCar);
+        jButton_stergere_dataCar.setBounds(290, 15, 100, 30);
+
+        jButton_editare_dataCars.setFont(new java.awt.Font("Arial", 0, 13)); // NOI18N
+        jButton_editare_dataCars.setText("Editare");
+        jPanel2.add(jButton_editare_dataCars);
+        jButton_editare_dataCars.setBounds(180, 15, 100, 30);
+
+        jComboBox_sort.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jComboBox_sort.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Categorie", "Marca", "Model ( Tipul auto.)", "Caroserie", "Capacitate cilindrica" }));
+        jComboBox_sort.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox_sortActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jComboBox_sort);
+        jComboBox_sort.setBounds(680, 50, 260, 30);
+
+        jCheckBox_sort.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jCheckBox_sort.setText("Sortare dupa:");
+        jCheckBox_sort.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jCheckBox_sort.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jCheckBox_sort.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox_sortActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jCheckBox_sort);
+        jCheckBox_sort.setBounds(550, 50, 120, 30);
+
+        jCheckBox_search.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jCheckBox_search.setText("Cautare autoturism dupa:");
+        jCheckBox_search.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jCheckBox_search.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jCheckBox_search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBox_searchActionPerformed(evt);
+            }
+        });
+        jPanel2.add(jCheckBox_search);
+        jCheckBox_search.setBounds(480, 15, 190, 30);
+
+        buttonGroup1.add(jRadioButton_desc);
+        jRadioButton_desc.setText("Descendent");
+        jPanel2.add(jRadioButton_desc);
+        jRadioButton_desc.setBounds(1043, 50, 90, 30);
+
+        buttonGroup1.add(jRadioButton_asc);
+        jRadioButton_asc.setSelected(true);
+        jRadioButton_asc.setText("Ascendent");
+        jPanel2.add(jRadioButton_asc);
+        jRadioButton_asc.setBounds(950, 50, 90, 30);
 
         jPanel1.add(jPanel2);
         jPanel2.setBounds(10, 60, 1280, 570);
@@ -537,6 +719,138 @@ public ArrayList<Registered> getRegisteredList(){
         this.setState(Frame.ICONIFIED);
     }//GEN-LAST:event_jLabel14MouseClicked
 
+    private void jButton_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_searchActionPerformed
+        // TODO add your handling code here:
+        int curentItem = jComboBox_list_search.getSelectedIndex();
+        sortare = 1 + curentItem;
+
+        GolesteTabelul();
+        ShowRegistereds();
+        ShowOwners();
+        ShowCars();
+    }//GEN-LAST:event_jButton_searchActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        ShowAllData();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton_stergere_dataCarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton_stergere_dataCarActionPerformed
+        // TODO add your handling code here:
+        
+        int carsTable = jTable_showInfo_cars.getSelectedRow();
+        int ownerTable = jTable_showInfo_owner.getSelectedRow();
+        int registeredTable = jTable_showInfo_registered.getSelectedRow();
+        
+        TableModel model = jTable_showInfo_cars.getModel(); 
+        TableModel model2 = jTable_showInfo_owner.getModel();
+        TableModel model3 = jTable_showInfo_registered.getModel();
+        
+        if ( jTable_showInfo_cars.getSelectionModel().isSelectionEmpty() && jTable_showInfo_owner.getSelectionModel().isSelectionEmpty() && jTable_showInfo_registered.getSelectionModel().isSelectionEmpty() ) 
+        {
+            JOptionPane.showMessageDialog(null, "Selectati un autovehicolo/ proprietar/ date de\n inregistrare pentru al sterge! " , "Atentie!" ,JOptionPane.WARNING_MESSAGE); 
+        }else{
+        
+            if( !jTable_showInfo_cars.getSelectionModel().isSelectionEmpty() ){
+                 int mesaj = JOptionPane.showConfirmDialog(null, "Vreti sa stergeti acest user? ", "Atentie", JOptionPane.OK_CANCEL_OPTION);
+                 if (mesaj == 0){
+                 int i = carsTable;
+                 String query = "DELETE FROM `cars` WHERE `id_car`="+ model.getValueAt(i, 0).toString() ;
+                 String query2 = "DELETE FROM `owner` WHERE `id_owner`="+ model.getValueAt(i, 0).toString() ;
+                 String query3 = "DELETE FROM `registered` WHERE `id_registered`="+ model.getValueAt(i, 0).toString() ;
+
+                executQuery this_query = new executQuery();
+                this_query.executeSqlQuery(query, "Autovegicolul a fost sters.", "Informatii");
+                this_query.executeSqlQuery(query2, "Proprietarul a fost sters.", "Informatii");
+                this_query.executeSqlQuery(query3, "Inmatricularea a fost stersa.", "Informatii");
+
+                }
+   
+            }
+            if( !jTable_showInfo_owner.getSelectionModel().isSelectionEmpty() ){
+                 int mesaj = JOptionPane.showConfirmDialog(null, "Vreti sa stergeti acest user? ", "Atentie", JOptionPane.OK_CANCEL_OPTION);
+                 if (mesaj == 0){
+                 int i = ownerTable;
+                 String query = "DELETE FROM `cars` WHERE `id_car`="+ model2.getValueAt(i, 0).toString() ;
+                 String query2 = "DELETE FROM `owner` WHERE `id_owner`="+ model2.getValueAt(i, 0).toString() ;
+                 String query3 = "DELETE FROM `registered` WHERE `id_registered`="+ model2.getValueAt(i, 0).toString() ;
+
+                executQuery this_query = new executQuery();
+                this_query.executeSqlQuery(query, "Autovegicolul a fost sters.", "Informatii");
+                this_query.executeSqlQuery(query2, "Proprietarul a fost sters.", "Informatii");
+                this_query.executeSqlQuery(query3, "Inmatricularea a fost stersa.", "Informatii");
+
+                }
+          
+            }
+            if( !jTable_showInfo_registered.getSelectionModel().isSelectionEmpty() ){
+                 int mesaj = JOptionPane.showConfirmDialog(null, "Vreti sa stergeti acest user? ", "Atentie", JOptionPane.OK_CANCEL_OPTION);
+                 if (mesaj == 0){
+                 int i = registeredTable;
+                 String query = "DELETE FROM `cars` WHERE `id_car`="+ model3.getValueAt(i, 0).toString() ;
+                 String query2 = "DELETE FROM `owner` WHERE `id_owner`="+ model3.getValueAt(i, 0).toString() ;
+                 String query3 = "DELETE FROM `registered` WHERE `id_registered`="+ model3.getValueAt(i, 0).toString() ;
+
+                executQuery this_query = new executQuery();
+                this_query.executeSqlQuery(query, "Autovegicolul a fost sters.", "Informatii");
+                this_query.executeSqlQuery(query2, "Proprietarul a fost sters.", "Informatii");
+                this_query.executeSqlQuery(query3, "Inmatricularea a fost stersa.", "Informatii");
+
+                }
+                
+            }
+            ShowAllData();
+        }
+        
+        
+    }//GEN-LAST:event_jButton_stergere_dataCarActionPerformed
+
+    private void jCheckBox_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_searchActionPerformed
+        // TODO add your handling code here:
+        if(jCheckBox_search.isSelected()){
+            SetSearchOn();
+        }else{
+            SetSearchOf();
+        }
+        
+    }//GEN-LAST:event_jCheckBox_searchActionPerformed
+
+    private void jCheckBox_sortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox_sortActionPerformed
+        // TODO add your handling code here:
+        if(jCheckBox_sort.isSelected()){
+            SetSortOn();
+        }else{
+            SetSortOf();
+        }
+        
+        
+    }//GEN-LAST:event_jCheckBox_sortActionPerformed
+
+    private void jComboBox_sortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_sortActionPerformed
+        // TODO add your handling code here:
+        
+        int curentItem = jComboBox_sort.getSelectedIndex();
+        if( curentItem == 0){
+            selectedSort = "category_car";
+        }else if(curentItem == 1){
+            selectedSort = "mark_car";
+        }else if(curentItem == 2){
+            selectedSort = "type_car";
+        }else if(curentItem == 3){
+            selectedSort = "carBody_car";
+        }else if(curentItem == 4){
+            selectedSort = "engine_cm3_car";
+        }
+
+        sortare = 9;
+
+        GolesteTabelul();
+        ShowRegistereds();
+        ShowOwners();
+        ShowCars();
+
+    }//GEN-LAST:event_jComboBox_sortActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -573,7 +887,16 @@ public ArrayList<Registered> getRegisteredList(){
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton_LogOut;
+    private javax.swing.JButton jButton_editare_dataCars;
+    private javax.swing.JButton jButton_search;
+    private javax.swing.JButton jButton_stergere_dataCar;
+    private javax.swing.JCheckBox jCheckBox_search;
+    private javax.swing.JCheckBox jCheckBox_sort;
+    private javax.swing.JComboBox<String> jComboBox_list_search;
+    private javax.swing.JComboBox<String> jComboBox_sort;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel3;
@@ -585,6 +908,8 @@ public ArrayList<Registered> getRegisteredList(){
     private javax.swing.JLayeredPane jLayeredPane3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JRadioButton jRadioButton_asc;
+    private javax.swing.JRadioButton jRadioButton_desc;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -594,5 +919,6 @@ public ArrayList<Registered> getRegisteredList(){
     private javax.swing.JTable jTable_showInfo_cars;
     private javax.swing.JTable jTable_showInfo_owner;
     private javax.swing.JTable jTable_showInfo_registered;
+    private javax.swing.JTextField jTextField_search;
     // End of variables declaration//GEN-END:variables
 }
