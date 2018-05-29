@@ -5,6 +5,8 @@
  */
 package autovehicole;
 
+import java.util.Date;
+
 /**
  *
  * @author Calin-Alex
@@ -19,9 +21,9 @@ public class Owner {
     private String gender_owner;
     private String jud_owner;
     private String address_owner;
-    private String data_owner;
+    private Date data_owner;
 
-    public Owner(int id_owner, String firstName_owner, String lastName_owner, int cnp_owner, String nationality_owner, String gender_owner, String jud_owner, String address_owner, String data_owner) {
+    public Owner(int id_owner, String firstName_owner, String lastName_owner, int cnp_owner, String nationality_owner, String gender_owner, String jud_owner, String address_owner, Date data_owner) {
         this.id_owner = id_owner;
         this.firstName_owner = firstName_owner;
         this.lastName_owner = lastName_owner;
@@ -148,14 +150,14 @@ public class Owner {
     /**
      * @return the data_owner
      */
-    public String getData_owner() {
+    public Date getData_owner() {
         return data_owner;
     }
 
     /**
      * @param data_owner the data_owner to set
      */
-    public void setData_owner(String data_owner) {
+    public void setData_owner(Date data_owner) {
         this.data_owner = data_owner;
     }
     

@@ -5,6 +5,8 @@
  */
 package autovehicole;
 
+import java.util.Date;
+
 /**
  *
  * @author Calin-Alex
@@ -21,9 +23,9 @@ public class User {
     private String gender;
     private String function;
     private String jud;
-    private String date;
+    private Date date;
 
-    public User(int id, String userName, String firstName, String lastName, String address, String password, String gender, String function, String jud, String date) {
+    public User(int id, String userName, String firstName, String lastName, String address, String password, String gender, String function, String jud, Date date) {
         this.id = id;
         this.userName = userName;
         this.firstName = firstName;
@@ -165,14 +167,14 @@ public class User {
     /**
      * @return the date
      */
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
     /**
      * @param date the date to set
      */
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

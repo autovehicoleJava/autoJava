@@ -5,6 +5,8 @@
  */
 package autovehicole;
 
+import java.util.Date;
+
 /**
  *
  * @author Calin-Alex
@@ -55,10 +57,10 @@ public class Cars {
     private int lungime_masina;
     private int latime_masina;
     private int inaltime_masina;
-    private String data_inmatricularii;
+    private Date data_inmatricularii;
 
 
-    public Cars(int id, String category, String mark, String carBody, String type, String nrOmologare, int sasiu, String cutieViteze, int co2, String color, int dBA_inMers, int dBA_stationare, int kmh, int aerBar_oConducta, int aerBar_douaConducte, int nr_axe, String tractiune, int rezervor, int kg_masina, int masa_totala, int masa_totala_aut, int masa_totala_aut_carlig, int masa_max_aut_fata, int masa_max_aut_mijloc, int masa_max_aut_spate, int masa_max_aut_senila, int maxa_aut_remorca_cu_franare, int maxa_aut_remorca_fara_franare, int nr_locuri, int nr_locuri_inFata, int nr_locuri_picioare, int nr_locuri_peScaun, String anvelope_fata, String anvelope_fata_sau, String anvelope_mijloc_spate, String anvelope_mijloc_spate_sau, String tip_motor, String serie_motor, int cilindrii_motor, int putere_turatii, String carburant, int lungime_masina, int latime_masina, int inaltime_masina, String data_inmatricularii) {
+    public Cars(int id, String category, String mark, String carBody, String type, String nrOmologare, int sasiu, String cutieViteze, int co2, String color, int dBA_inMers, int dBA_stationare, int kmh, int aerBar_oConducta, int aerBar_douaConducte, int nr_axe, String tractiune, int rezervor, int kg_masina, int masa_totala, int masa_totala_aut, int masa_totala_aut_carlig, int masa_max_aut_fata, int masa_max_aut_mijloc, int masa_max_aut_spate, int masa_max_aut_senila, int maxa_aut_remorca_cu_franare, int maxa_aut_remorca_fara_franare, int nr_locuri, int nr_locuri_inFata, int nr_locuri_picioare, int nr_locuri_peScaun, String anvelope_fata, String anvelope_fata_sau, String anvelope_mijloc_spate, String anvelope_mijloc_spate_sau, String tip_motor, String serie_motor, int cilindrii_motor, int putere_turatii, String carburant, int lungime_masina, int latime_masina, int inaltime_masina, Date data_inmatricularii) {
         this.id = id;
         this.category = category;
         this.mark = mark;
@@ -725,14 +727,14 @@ public class Cars {
     /**
      * @return the data_inmatricularii
      */
-    public String getData_inmatricularii() {
+    public Date getData_inmatricularii() {
         return data_inmatricularii;
     }
 
     /**
      * @param data_inmatricularii the data_inmatricularii to set
      */
-    public void setData_inmatricularii(String data_inmatricularii) {
+    public void setData_inmatricularii(Date data_inmatricularii) {
         this.data_inmatricularii = data_inmatricularii;
     }
     

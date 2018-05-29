@@ -1,4 +1,8 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package autovehicole;
 
 import java.awt.Frame;
@@ -9,7 +13,10 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-
+/**
+ *
+ * @author Calin-Alex
+ */
 public class EditareAcountAdministrator extends javax.swing.JFrame {
 
     /**
@@ -63,7 +70,7 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
                 user = new User(rs.getInt("id_user"),rs.getString("userName_user"), rs.getString("firstName_user"), 
                         rs.getString("lastName_user"), rs.getString("address_user"), rs.getString("password_user"),
                         rs.getString("gender_user"), rs.getString("function_user"), rs.getString("jud_user"),
-                        rs.getString("date_user"));
+                        rs.getDate("date_user"));
                 userList.add(user);
             }
         }catch (Exception e){
@@ -205,9 +212,9 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
                 
         int i = jTable_show_users.getSelectedRow();
         TableModel model = jTable_show_users.getModel();
-        String date = model.getValueAt(i, 8).toString();
-        
-        System.out.println(date);
+        String date = model.getValueAt(i, 9).toString();
+       
+        System.out.println("date ="+date);
         if( !firstName.equals("") && !lastName.equals("") &&
             !password.equals("") && !address.equals("") &&  password.equals(jPasswordField_repeat_password_user.getText())  )
         {
@@ -244,11 +251,14 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable_show_users = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jLayeredPane1 = new javax.swing.JLayeredPane();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jLayeredPane2 = new javax.swing.JLayeredPane();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable_show_users = new javax.swing.JTable();
         jLabel15 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -283,7 +293,7 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(1010, 620));
+        setPreferredSize(new java.awt.Dimension(1010, 580));
         setResizable(false);
         getContentPane().setLayout(null);
 
@@ -332,59 +342,12 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
 
         jPanel3.setLayout(null);
 
-        jTable_show_users.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Id", "User", "Nume", "Prenume", "Adresa", "Parola", "Sex", "Functie", "Judet", "Data"
-            }
-        ));
-        jTable_show_users.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable_show_usersMouseClicked(evt);
-            }
-        });
-        jScrollPane2.setViewportView(jTable_show_users);
-        if (jTable_show_users.getColumnModel().getColumnCount() > 0) {
-            jTable_show_users.getColumnModel().getColumn(0).setMinWidth(40);
-            jTable_show_users.getColumnModel().getColumn(0).setPreferredWidth(40);
-            jTable_show_users.getColumnModel().getColumn(0).setMaxWidth(40);
-            jTable_show_users.getColumnModel().getColumn(1).setMinWidth(80);
-            jTable_show_users.getColumnModel().getColumn(1).setPreferredWidth(80);
-            jTable_show_users.getColumnModel().getColumn(1).setMaxWidth(80);
-            jTable_show_users.getColumnModel().getColumn(2).setMinWidth(80);
-            jTable_show_users.getColumnModel().getColumn(2).setPreferredWidth(80);
-            jTable_show_users.getColumnModel().getColumn(2).setMaxWidth(80);
-            jTable_show_users.getColumnModel().getColumn(3).setMinWidth(125);
-            jTable_show_users.getColumnModel().getColumn(3).setPreferredWidth(125);
-            jTable_show_users.getColumnModel().getColumn(3).setMaxWidth(125);
-            jTable_show_users.getColumnModel().getColumn(5).setMinWidth(100);
-            jTable_show_users.getColumnModel().getColumn(5).setPreferredWidth(100);
-            jTable_show_users.getColumnModel().getColumn(5).setMaxWidth(100);
-            jTable_show_users.getColumnModel().getColumn(6).setMinWidth(65);
-            jTable_show_users.getColumnModel().getColumn(6).setPreferredWidth(65);
-            jTable_show_users.getColumnModel().getColumn(6).setMaxWidth(65);
-            jTable_show_users.getColumnModel().getColumn(7).setMinWidth(90);
-            jTable_show_users.getColumnModel().getColumn(7).setPreferredWidth(90);
-            jTable_show_users.getColumnModel().getColumn(7).setMaxWidth(90);
-            jTable_show_users.getColumnModel().getColumn(8).setMinWidth(80);
-            jTable_show_users.getColumnModel().getColumn(8).setPreferredWidth(80);
-            jTable_show_users.getColumnModel().getColumn(8).setMaxWidth(80);
-            jTable_show_users.getColumnModel().getColumn(9).setMinWidth(80);
-            jTable_show_users.getColumnModel().getColumn(9).setPreferredWidth(80);
-            jTable_show_users.getColumnModel().getColumn(9).setMaxWidth(80);
-        }
-
-        jPanel3.add(jScrollPane2);
-        jScrollPane2.setBounds(10, 20, 970, 190);
-
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autovehicole/imgAutovehicole/if_user_close_security_103764.png"))); // NOI18N
         jButton1.setText("Accepta");
         jButton1.setToolTipText("Ofera permisiune de a deveni user.");
         jPanel3.add(jButton1);
-        jButton1.setBounds(820, 220, 160, 45);
+        jButton1.setBounds(380, 450, 160, 45);
 
         jButton2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autovehicole/imgAutovehicole/if_user_male_delete_44487.png"))); // NOI18N
@@ -396,7 +359,7 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
             }
         });
         jPanel3.add(jButton2);
-        jButton2.setBounds(440, 220, 160, 45);
+        jButton2.setBounds(10, 450, 160, 45);
 
         jButton3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autovehicole/imgAutovehicole/if_user_male_edit_44491.png"))); // NOI18N
@@ -408,14 +371,52 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
             }
         });
         jPanel3.add(jButton3);
-        jButton3.setBounds(630, 220, 160, 45);
+        jButton3.setBounds(195, 450, 160, 45);
+        jPanel3.add(jLayeredPane1);
+        jLayeredPane1.setBounds(20, 170, 0, 0);
+
+        jScrollPane3.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 204, 0), 2, true), "Lista utilizatori :", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Tahoma", 1, 24), new java.awt.Color(255, 204, 0))); // NOI18N
+        jScrollPane3.setPreferredSize(new java.awt.Dimension(820, 100));
+
+        jLayeredPane2.setPreferredSize(new java.awt.Dimension(857, 100));
+
+        jTable_show_users.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Id", "User", "Nume", "Prenume", "Adresa", "Parola", "Sex", "Functie", "Judet", "Data inregistrarii"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable_show_users.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable_show_usersMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(jTable_show_users);
+
+        jLayeredPane2.add(jScrollPane2);
+        jScrollPane2.setBounds(10, 20, 840, 310);
+
+        jScrollPane3.setViewportView(jLayeredPane2);
+
+        jPanel3.add(jScrollPane3);
+        jScrollPane3.setBounds(10, 0, 530, 410);
 
         jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autovehicole/imgAutovehicole/free-wallpaper-11.jpg"))); // NOI18N
         jPanel3.add(jLabel15);
-        jLabel15.setBounds(0, 0, 990, 280);
+        jLabel15.setBounds(0, 0, 550, 530);
 
         jPanel1.add(jPanel3);
-        jPanel3.setBounds(10, 40, 990, 280);
+        jPanel3.setBounds(450, 40, 550, 530);
 
         jPanel2.setBackground(new java.awt.Color(243, 243, 243));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 255), 2, true), "Editare utilizatori:", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Arial", 1, 24), new java.awt.Color(0, 0, 255))); // NOI18N
@@ -425,7 +426,7 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("User :");
         jPanel2.add(jLabel1);
-        jLabel1.setBounds(110, 40, 47, 30);
+        jLabel1.setBounds(30, 40, 47, 30);
 
         jTextField_firstName_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTextField_firstName_user.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -434,18 +435,19 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jTextField_firstName_user);
-        jTextField_firstName_user.setBounds(240, 80, 220, 30);
+        jTextField_firstName_user.setBounds(160, 80, 220, 30);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Prenume :");
         jPanel2.add(jLabel2);
-        jLabel2.setBounds(110, 120, 81, 30);
+        jLabel2.setBounds(30, 120, 81, 30);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Judet :");
         jPanel2.add(jLabel3);
-        jLabel3.setBounds(530, 40, 55, 30);
+        jLabel3.setBounds(30, 280, 55, 30);
 
         jTextField_lastName_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTextField_lastName_user.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -454,40 +456,48 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jTextField_lastName_user);
-        jTextField_lastName_user.setBounds(240, 120, 220, 30);
+        jTextField_lastName_user.setBounds(160, 120, 220, 30);
 
         jComboBox_jud_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jComboBox_jud_user.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Alba", "Arad", "Arges", "Bacau", "Bihor", "Bistrita Nasaud", "Botosani", "Braila", "Brasov", "Bucuresti", "Buzau", "Calaras", "Caras Severin", "Cluj", "Constanta", "Covasna", "Dambovita", "Galati", "Giurgiu", "Gorj", "Harghita", "Hunedoara", "Ialomita", "Iasi", "Ilfov", "Maramures", "Mehedinti", "Mures", "Neamt", "Olt", "Prahova", "Salaj", "Satul Mare", "Sibiu", "Suceava", "Teleorman", "Timis", "Tulcea", "Valcia", "Vaslui", "Vrancea" }));
         jComboBox_jud_user.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jComboBox_jud_user.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox_jud_userActionPerformed(evt);
+            }
+        });
         jPanel2.add(jComboBox_jud_user);
-        jComboBox_jud_user.setBounds(660, 40, 220, 30);
+        jComboBox_jud_user.setBounds(160, 280, 220, 30);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Adresa :");
         jPanel2.add(jLabel4);
-        jLabel4.setBounds(530, 120, 65, 30);
+        jLabel4.setBounds(30, 360, 65, 30);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Sex :");
         jPanel2.add(jLabel5);
-        jLabel5.setBounds(110, 240, 40, 30);
+        jLabel5.setBounds(30, 240, 40, 30);
 
         buttonGroup_gender.add(jRadioButton_m_user);
         jRadioButton_m_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jRadioButton_m_user.setForeground(new java.awt.Color(255, 255, 255));
         jRadioButton_m_user.setText("Masculin");
         jRadioButton_m_user.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jRadioButton_m_user.setOpaque(false);
         jPanel2.add(jRadioButton_m_user);
-        jRadioButton_m_user.setBounds(270, 240, 75, 30);
+        jRadioButton_m_user.setBounds(190, 240, 75, 30);
 
         buttonGroup_gender.add(jRadioButton_f_user);
         jRadioButton_f_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jRadioButton_f_user.setForeground(new java.awt.Color(255, 255, 255));
         jRadioButton_f_user.setText("Feminin");
         jRadioButton_f_user.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jRadioButton_f_user.setOpaque(false);
         jPanel2.add(jRadioButton_f_user);
-        jRadioButton_f_user.setBounds(360, 240, 71, 30);
+        jRadioButton_f_user.setBounds(280, 240, 71, 30);
 
         jTextArea_address_user.setColumns(20);
         jTextArea_address_user.setRows(4);
@@ -500,11 +510,11 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextArea_address_user);
 
         jPanel2.add(jScrollPane1);
-        jScrollPane1.setBounds(660, 120, 220, 78);
+        jScrollPane1.setBounds(160, 360, 220, 78);
 
         jButton_create_user.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jButton_create_user.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autovehicole/imgAutovehicole/if_user_male_add_44485.png"))); // NOI18N
-        jButton_create_user.setText("Creaza utilizator");
+        jButton_create_user.setText("Editeaza utilizator");
         jButton_create_user.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton_create_user.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -512,50 +522,51 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jButton_create_user);
-        jButton_create_user.setBounds(660, 220, 220, 45);
+        jButton_create_user.setBounds(160, 460, 220, 45);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Functie :");
         jPanel2.add(jLabel8);
-        jLabel8.setBounds(530, 80, 68, 30);
+        jLabel8.setBounds(30, 320, 68, 30);
 
         jComboBox_function_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jComboBox_function_user.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Operator", "Inspector", "Administrator", "Altele" }));
         jComboBox_function_user.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jPanel2.add(jComboBox_function_user);
-        jComboBox_function_user.setBounds(660, 80, 220, 30);
+        jComboBox_function_user.setBounds(160, 320, 220, 30);
 
         jLabel_wrong_firstName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel_wrong_firstName.setIcon(new javax.swing.ImageIcon("C:\\Users\\Calin-Alex\\Desktop\\POZE PROIECT\\poze proiect autovehicole\\if_Erase_32464.png")); // NOI18N
         jPanel2.add(jLabel_wrong_firstName);
-        jLabel_wrong_firstName.setBounds(460, 80, 30, 30);
+        jLabel_wrong_firstName.setBounds(380, 80, 30, 30);
 
         jLabel_wrong_lastName.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel_wrong_lastName.setIcon(new javax.swing.ImageIcon("C:\\Users\\Calin-Alex\\Desktop\\POZE PROIECT\\poze proiect autovehicole\\if_Erase_32464.png")); // NOI18N
         jPanel2.add(jLabel_wrong_lastName);
-        jLabel_wrong_lastName.setBounds(460, 120, 30, 30);
+        jLabel_wrong_lastName.setBounds(380, 120, 30, 30);
 
         jLabel_wrong_address.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel_wrong_address.setIcon(new javax.swing.ImageIcon("C:\\Users\\Calin-Alex\\Desktop\\POZE PROIECT\\poze proiect autovehicole\\if_Erase_32464.png")); // NOI18N
         jPanel2.add(jLabel_wrong_address);
-        jLabel_wrong_address.setBounds(880, 140, 30, 30);
+        jLabel_wrong_address.setBounds(380, 380, 30, 30);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("Repeta parola : ");
         jPanel2.add(jLabel10);
-        jLabel10.setBounds(110, 200, 140, 30);
+        jLabel10.setBounds(30, 200, 140, 30);
 
         jLabel_wrong_password_repeat.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel_wrong_password_repeat.setIcon(new javax.swing.ImageIcon("C:\\Users\\Calin-Alex\\Desktop\\POZE PROIECT\\poze proiect autovehicole\\if_Erase_32464.png")); // NOI18N
         jPanel2.add(jLabel_wrong_password_repeat);
-        jLabel_wrong_password_repeat.setBounds(460, 200, 30, 30);
+        jLabel_wrong_password_repeat.setBounds(380, 200, 30, 30);
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel11.setForeground(new java.awt.Color(255, 255, 255));
         jLabel11.setText("Parola : ");
         jPanel2.add(jLabel11);
-        jLabel11.setBounds(110, 160, 66, 30);
+        jLabel11.setBounds(30, 160, 66, 30);
 
         jPasswordField_repeat_password_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jPasswordField_repeat_password_user.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -564,7 +575,7 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jPasswordField_repeat_password_user);
-        jPasswordField_repeat_password_user.setBounds(240, 200, 220, 30);
+        jPasswordField_repeat_password_user.setBounds(160, 200, 220, 30);
 
         jPasswordField_password_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jPasswordField_password_user.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -573,18 +584,18 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jPasswordField_password_user);
-        jPasswordField_password_user.setBounds(240, 160, 220, 30);
+        jPasswordField_password_user.setBounds(160, 160, 220, 30);
 
         jLabel_wrong_password.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel_wrong_password.setIcon(new javax.swing.ImageIcon("C:\\Users\\Calin-Alex\\Desktop\\POZE PROIECT\\poze proiect autovehicole\\if_Erase_32464.png")); // NOI18N
         jPanel2.add(jLabel_wrong_password);
-        jLabel_wrong_password.setBounds(460, 160, 30, 30);
+        jLabel_wrong_password.setBounds(380, 160, 30, 30);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Nume :");
         jPanel2.add(jLabel6);
-        jLabel6.setBounds(110, 80, 58, 30);
+        jLabel6.setBounds(30, 80, 58, 30);
 
         jTextField_userName_user.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTextField_userName_user.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -593,28 +604,28 @@ public class EditareAcountAdministrator extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jTextField_userName_user);
-        jTextField_userName_user.setBounds(240, 40, 220, 30);
+        jTextField_userName_user.setBounds(160, 40, 220, 30);
 
         jLabel_wrong_user.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel_wrong_user.setIcon(new javax.swing.ImageIcon("C:\\Users\\Calin-Alex\\Desktop\\POZE PROIECT\\poze proiect autovehicole\\if_Erase_32464.png")); // NOI18N
         jPanel2.add(jLabel_wrong_user);
-        jLabel_wrong_user.setBounds(460, 40, 30, 30);
+        jLabel_wrong_user.setBounds(380, 40, 30, 30);
 
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autovehicole/imgAutovehicole/user-groups-frenchnavy-256px-120x120.png"))); // NOI18N
         jPanel2.add(jLabel9);
-        jLabel9.setBounds(530, 150, 120, 120);
+        jLabel9.setBounds(30, 390, 120, 120);
 
-        jLabel7.setIcon(new javax.swing.ImageIcon("C:\\Users\\Calin-Alex\\Desktop\\POZE PROIECT\\poze proiect autovehicole\\35293hd.jpg")); // NOI18N
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autovehicole/imgAutovehicole/free-wallpaper-11.jpg"))); // NOI18N
         jLabel7.setText("jLabel7");
         jPanel2.add(jLabel7);
-        jLabel7.setBounds(10, 30, 970, 250);
+        jLabel7.setBounds(10, 30, 410, 490);
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(10, 320, 990, 290);
+        jPanel2.setBounds(10, 40, 430, 530);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(0, 0, 1010, 620);
+        jPanel1.setBounds(0, 0, 1010, 580);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -750,6 +761,10 @@ System.out.println(jud);
      
     }//GEN-LAST:event_jTable_show_usersMouseClicked
 
+    private void jComboBox_jud_userActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox_jud_userActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox_jud_userActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -814,6 +829,8 @@ System.out.println(jud);
     private javax.swing.JLabel jLabel_wrong_password;
     private javax.swing.JLabel jLabel_wrong_password_repeat;
     private javax.swing.JLabel jLabel_wrong_user;
+    private javax.swing.JLayeredPane jLayeredPane1;
+    private javax.swing.JLayeredPane jLayeredPane2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -823,6 +840,7 @@ System.out.println(jud);
     private javax.swing.JRadioButton jRadioButton_m_user;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable_show_users;
     private javax.swing.JTextArea jTextArea_address_user;
     private javax.swing.JTextField jTextField_firstName_user;

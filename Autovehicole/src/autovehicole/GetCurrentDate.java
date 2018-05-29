@@ -5,8 +5,11 @@
  */
 package autovehicole;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 /**
  *
@@ -14,10 +17,18 @@ import java.time.format.DateTimeFormatter;
  */
 public class GetCurrentDate {
     
+    private Date date;
+    
     public String CurrentDate()
     {
         LocalDate localDate = LocalDate.now();
-        String date = (DateTimeFormatter.ofPattern("dd-MM-yyy").format(localDate));
+        String date = (DateTimeFormatter.ofPattern("yyyy-MM-dd").format(localDate));
        return date;
+    }
+    
+    public String SelectedDate( Date  date){
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+        return formatter.format(date);
     }
 }

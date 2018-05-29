@@ -1,20 +1,29 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package autovehicole;
 
 import java.awt.Frame;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-
+/**
+ *
+ * @author Calin-Alex
+ */
 public class show_list extends javax.swing.JFrame {
 
     public int sortare = 0;
     public int idSelected;
     public String selectedSort;
+    public Date selectedDate;
     
     /**
      * Creates new form show_list
@@ -97,8 +106,11 @@ public class show_list extends javax.swing.JFrame {
         if( sortare == 0){
             query = "SELECT * FROM `cars` "; 
         }
-        if( sortare == 1 || sortare == 2 ){
+        if( sortare == 1 || sortare == 2 || sortare == 3 ){
             query = "SELECT * FROM `cars` WHERE `id_car`= '"+idSelected+"'"; 
+        } 
+        if( sortare == 3 ){
+            query = "SELECT * FROM `cars` WHERE `date_car`< '"+jTextField_search.getText()+"'"; 
         } 
         if( sortare == 9){
             if( jRadioButton_asc.isSelected()){
@@ -131,7 +143,7 @@ public class show_list extends javax.swing.JFrame {
                         rs.getString("tires_front_car"),rs.getString("tires_else_front_car"), rs.getString("tires_middle_back_car"), rs.getString("tires_else_middle_back_car"),
                         rs.getString("engine_type_car"),rs.getString("engine_series_car"), rs.getInt("engine_cm3_car"), rs.getInt("power_kW_min_car"),
                         rs.getString("fuel_car"),rs.getInt("length_car"), rs.getInt("width_kW_min_car"), rs.getInt("height_kW_min_car"),
-                        rs.getString("date_car"));
+                        rs.getDate("date_car"));
                 carsList.add(cars);
             }
         }catch (Exception e){
@@ -212,12 +224,16 @@ public class show_list extends javax.swing.JFrame {
         if( sortare == 0 || sortare == 9){
             query = "SELECT * FROM `owner` ";   
         } 
-        if( sortare == 1){
+        if( sortare == 1 || sortare == 3 ){
             query = "SELECT * FROM `owner` WHERE `id_owner`= '"+idSelected+"'"; 
         } 
         if( sortare == 2){
             query = "SELECT * FROM `owner` WHERE `firstName_owner`= '"+jTextField_search.getText()+"' OR `lastName_owner`= '"+jTextField_search.getText()+"' "; 
+        }
+        if( sortare == 3 ){
+            query = "SELECT * FROM `owner` WHERE `date_owner`< '"+jTextField_search.getText()+"'"; 
         } 
+        
         
         
         Connect con = new Connect();
@@ -232,7 +248,7 @@ public class show_list extends javax.swing.JFrame {
             {
                 owner = new Owner(rs.getInt("id_owner"),rs.getString("firstName_owner"), rs.getString("lastName_owner"), 
                         rs.getInt("cnp_owner"), rs.getString("nationality_owner"), rs.getString("gender_owner"),
-                        rs.getString("jud_owner"), rs.getString("address_owner"), rs.getString("date_owner"));
+                        rs.getString("jud_owner"), rs.getString("address_owner"), rs.getDate("date_owner"));
                 ownerList.add(owner);
             }
         }catch (Exception e){
@@ -285,6 +301,9 @@ public ArrayList<Registered> getRegisteredList(){
         if( sortare == 2 ){
             query = "SELECT * FROM `registered` WHERE `id_registered`= '"+idSelected+"'"; 
         } 
+        if( sortare == 3 ){
+                query = "SELECT * FROM `registered` WHERE `date_registered`< '"+jTextField_search.getText()+"'"; 
+        }
         
           
         Connect con = new Connect();
@@ -297,8 +316,8 @@ public ArrayList<Registered> getRegisteredList(){
             Registered registered;
             while (rs.next())
             {
-                registered = new Registered(rs.getInt("id_registered"),rs.getString("nr_registered"), rs.getString("date_registered"), 
-                        rs.getString("revision_registered"));
+                registered = new Registered(rs.getInt("id_registered"),rs.getString("nr_registered"), rs.getDate("date_registered"), 
+                        rs.getDate("revision_registered"));
                 registeredList.add(registered);
             }
         }catch (Exception e){
@@ -328,6 +347,8 @@ public ArrayList<Registered> getRegisteredList(){
         if( sortare == 1 ){
             idSelected = registereds.get(0).getId_registered();
         }
+        
+        
         
     }  
     
@@ -380,7 +401,7 @@ public ArrayList<Registered> getRegisteredList(){
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(1300, 640));
+        setPreferredSize(new java.awt.Dimension(1300, 690));
         setResizable(false);
         getContentPane().setLayout(null);
 
@@ -417,6 +438,7 @@ public ArrayList<Registered> getRegisteredList(){
 
         jPanel2.setLayout(null);
 
+        jLayeredPane1.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), "Detalii autovehicol", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Tahoma", 1, 18))); // NOI18N
         jLayeredPane1.setPreferredSize(new java.awt.Dimension(4020, 100));
 
         jTable_showInfo_cars.setModel(new javax.swing.table.DefaultTableModel(
@@ -487,12 +509,14 @@ public ArrayList<Registered> getRegisteredList(){
         }
 
         jLayeredPane1.add(jScrollPane1);
-        jScrollPane1.setBounds(10, 10, 4000, 190);
+        jScrollPane1.setBounds(10, 30, 4000, 190);
 
         jScrollPane3.setViewportView(jLayeredPane1);
 
         jPanel2.add(jScrollPane3);
-        jScrollPane3.setBounds(10, 90, 1260, 230);
+        jScrollPane3.setBounds(10, 90, 1260, 250);
+
+        jLayeredPane2.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), "Detalii Proprietar", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Tahoma", 1, 18))); // NOI18N
 
         jTable_showInfo_owner.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -524,12 +548,14 @@ public ArrayList<Registered> getRegisteredList(){
         }
 
         jLayeredPane2.add(jScrollPane4);
-        jScrollPane4.setBounds(10, 10, 750, 210);
+        jScrollPane4.setBounds(10, 30, 750, 210);
 
         jScrollPane2.setViewportView(jLayeredPane2);
 
         jPanel2.add(jScrollPane2);
-        jScrollPane2.setBounds(10, 330, 770, 230);
+        jScrollPane2.setBounds(10, 355, 770, 250);
+
+        jLayeredPane3.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true), "Detalii Inmatriculare", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.TOP, new java.awt.Font("Tahoma", 1, 18))); // NOI18N
 
         jTable_showInfo_registered.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -555,12 +581,12 @@ public ArrayList<Registered> getRegisteredList(){
         }
 
         jLayeredPane3.add(jScrollPane6);
-        jScrollPane6.setBounds(10, 10, 460, 210);
+        jScrollPane6.setBounds(10, 30, 460, 210);
 
         jScrollPane5.setViewportView(jLayeredPane3);
 
         jPanel2.add(jScrollPane5);
-        jScrollPane5.setBounds(790, 330, 480, 230);
+        jScrollPane5.setBounds(790, 355, 480, 250);
         jPanel2.add(jTextField_search);
         jTextField_search.setBounds(950, 15, 180, 30);
 
@@ -575,7 +601,7 @@ public ArrayList<Registered> getRegisteredList(){
         jButton_search.setBounds(1140, 15, 130, 30);
 
         jComboBox_list_search.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jComboBox_list_search.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Numarul de inmatriculare", "Nume sau prenume proprietar" }));
+        jComboBox_list_search.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Numarul de inmatriculare", "Nume sau prenume proprietar", "Inmatriculate inainte de", "Ultima revizie inainte de" }));
         jPanel2.add(jComboBox_list_search);
         jComboBox_list_search.setBounds(680, 15, 260, 30);
 
@@ -650,7 +676,7 @@ public ArrayList<Registered> getRegisteredList(){
         jRadioButton_asc.setBounds(950, 50, 90, 30);
 
         jPanel1.add(jPanel2);
-        jPanel2.setBounds(10, 60, 1280, 570);
+        jPanel2.setBounds(10, 60, 1280, 615);
 
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/autovehicole/imgAutovehicole/if_minus_71007.png"))); // NOI18N
@@ -692,7 +718,7 @@ public ArrayList<Registered> getRegisteredList(){
         jLabel_userName.setBounds(590, 10, 100, 15);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(0, 0, 1300, 640);
+        jPanel1.setBounds(0, 0, 1300, 690);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -723,7 +749,6 @@ public ArrayList<Registered> getRegisteredList(){
         // TODO add your handling code here:
         int curentItem = jComboBox_list_search.getSelectedIndex();
         sortare = 1 + curentItem;
-
         GolesteTabelul();
         ShowRegistereds();
         ShowOwners();
